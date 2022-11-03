@@ -1,5 +1,6 @@
 import time
 import curses
+from itertools import cycle
 from random import randint, randrange
 
 from controls import read_controls
@@ -12,7 +13,7 @@ with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
 
 with open(r'./animations/ship_frame_2.txt', 'r', encoding='utf-8') as fp:
     ship_frame_2 = fp.read()
-ship_frames = [ship_frame_1, ship_frame_2]
+ship_frames = [ship_frame_1, ship_frame_1, ship_frame_2, ship_frame_2]
 
 
 def draw(canvas):
@@ -36,9 +37,9 @@ def draw(canvas):
 
     corutines = []
 
-    while True:
+    for ship_frame in cycle(ship_frames):
         corutines.extend(corutines_add)
-        corutines.append(ship_animate(canvas, start_y, start_x))
+        corutines.append(ship_animate(canvas, start_y, start_x, ship_frame))
         if need_fire:
             corutines.append(
                 fire(
