@@ -22,57 +22,44 @@ def draw(canvas):
     start_y, start_x = (
         max_y * 3 / 4, max_x / 2
     )
+    need_fire = False
 
     stars = generate_stars(max_y, max_x)
 
+    canvas.nodelay(True)
     canvas.border()
     canvas.refresh()
 
     corutines_add = [
-        blink(canvas, row, column, randint(10, 70)) for row, column in stars
+        blink(canvas, row, column, randint(10, 30)) for row, column in stars
     ]
-    corutines = [
-        *corutines_add,
-        ship_animate(canvas, start_y, start_x)
-    ]
-    sleeping_corutines = [[0, corutine] for corutine in corutines]
+
+    corutines = []
 
     while True:
-        min_delay, _ = min(sleeping_corutines, key=lambda pair: pair[0])
-        sleeping_corutines = [
-            [timeout - min_delay, bomb] for timeout, bomb in sleeping_corutines]
-        time.sleep(min_delay)
-
-        # делим бомбы на активные и спящие
-        active_corutines = [
-            [timeout, bomb] for timeout, bomb in sleeping_corutines if timeout <= 0
-        ]
-        sleeping_corutines = [
-            [timeout, bomb] for timeout, bomb in sleeping_corutines if timeout > 0]
-
-        for _, corutine in active_corutines:
+        corutines.extend(corutines_add)
+        corutines.append(ship_animate(canvas, start_y, start_x))
+        if need_fire:
+            corutines.append(
+                fire(
+                    canvas, start_y - 1, start_x + 2,
+                    randrange(-10, 0, 1) / 10,
+                    randrange(-10, 10, 1) / 10
+                )
+            )
+        for corutine in corutines.copy():
             try:
-                sleep_command = corutine.send(None)
+                corutine.send(None)
                 canvas.refresh()
-                seconds_to_sleep = sleep_command.seconds
-                time.sleep(seconds_to_sleep)
-                sleeping_corutines.append([seconds_to_sleep, corutine])
             except StopIteration:
+                corutines.remove(corutine)
                 continue
 
         y_offset, x_offset, need_fire = read_controls(canvas)
         start_y += y_offset
         start_x += x_offset
-        if need_fire:
-            sleeping_corutines.append(
-                [0, fire(
-                    canvas, start_y - 1, start_x + 2,
-                    randrange(-10, 10, 1) / 10,
-                    randrange(-10, 10, 1) / 10
-                )]
-            )
 
-        time.sleep(0.2)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,5 @@
+import asyncio
+
 SPACE_KEY_CODE = 32
 LEFT_KEY_CODE = 260
 RIGHT_KEY_CODE = 261
@@ -10,9 +12,9 @@ def read_controls(canvas):
 
     rows_direction = columns_direction = 0
     space_pressed = False
-    canvas.nodelay(True)
 
     while True:
+        canvas.nodelay(True)
         pressed_key_code = canvas.getch()
 
         if pressed_key_code == -1:

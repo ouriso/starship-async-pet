@@ -1,3 +1,5 @@
+import asyncio
+import time
 from itertools import cycle
 
 from frames import draw_frame, get_frame_size  # , read_controls
@@ -18,19 +20,24 @@ with open(r'./animations/ship.txt', 'r', encoding='utf-8') as fp:
     ship_rows, ship_columns = get_frame_size(ship_frame_2)
 
 ship_frames = [
-    (ship_frame_1, False),
-    (ship_frame_1, True),
-    (ship_frame_2, False),
-    (ship_frame_2, True)
+    ship_frame_1,
+    ship_frame_2
 ]
+ship_stages = [False, True]
 
 
 async def ship_animate(canvas, ship_y, ship_x):
-    for ship_frame, negative in cycle(ship_frames):
-        draw_frame(canvas, ship_y, ship_x, ship)
-        draw_frame(
-            canvas, ship_y + ship_rows + rows_1, ship_x, ship_frame, negative
-        )
-        clock = do_sleep(1)
-        await clock
+    for ship_frame in ship_frames:
+        # draw_frame(canvas, ship_y, ship_x, ship)
+        for is_negative in ship_stages:
+            draw_frame(
+                canvas, ship_y, ship_x,
+                ship_frame, is_negative
+            )
+            # canvas.refresh()
+            await do_sleep()
+            # if not is_negative:
+            #     time.sleep(0.1)
         # await asyncio.sleep(0)
+        # draw_frame(canvas, ship_y, ship_x, ship, True)
+        # canvas.refresh()

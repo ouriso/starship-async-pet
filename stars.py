@@ -17,8 +17,8 @@ async def blink(canvas, row, column, delay, symbol='*'):
     await sleep_ticks(delay)
     while True:
         for ticks, style in stars_stages:
-            await sleep_ticks(ticks)
             canvas.addstr(row, column, symbol, style or curses.A_NORMAL)
+            await sleep_ticks(ticks)
 
 
 def generate_stars(max_y: int, max_x: int, stars_number: int = 50) -> set:
