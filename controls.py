@@ -1,8 +1,7 @@
-SPACE_KEY_CODE = 32
-LEFT_KEY_CODE = 260
-RIGHT_KEY_CODE = 261
-UP_KEY_CODE = 259
-DOWN_KEY_CODE = 258
+from config import (
+    ROWS_SPEED, COLUMNS_SPEED,
+    UP_KEY_CODE, DOWN_KEY_CODE, RIGHT_KEY_CODE, LEFT_KEY_CODE, SPACE_KEY_CODE
+)
 
 
 def read_controls(canvas):
@@ -20,16 +19,16 @@ def read_controls(canvas):
             break
 
         if pressed_key_code == UP_KEY_CODE:
-            rows_direction = -1
+            rows_direction = -ROWS_SPEED
 
         if pressed_key_code == DOWN_KEY_CODE:
-            rows_direction = 1
+            rows_direction = ROWS_SPEED
 
         if pressed_key_code == RIGHT_KEY_CODE:
-            columns_direction = 1
+            columns_direction = COLUMNS_SPEED
 
         if pressed_key_code == LEFT_KEY_CODE:
-            columns_direction = -1
+            columns_direction = -COLUMNS_SPEED
 
         if pressed_key_code == SPACE_KEY_CODE:
             space_pressed = True
