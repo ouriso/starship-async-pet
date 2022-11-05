@@ -19,11 +19,9 @@ async def fire(
     row += rows_speed
     column += columns_speed
 
-    row_col_div = abs(rows_speed / columns_speed)
-
-    if columns_speed == 0 or row_col_div > 1.6:
+    if columns_speed == 0 or abs(rows_speed) > 1.6 * abs(columns_speed):
         symbol = '|'
-    elif rows_speed == 0 or row_col_div < 0.6:
+    elif rows_speed == 0 or abs(rows_speed) < 0.6 * abs(columns_speed):
         symbol = '-'
     elif (rows_speed * columns_speed) > 0:
         symbol = '\\'
@@ -31,7 +29,7 @@ async def fire(
         symbol = '/'
 
     rows, columns = canvas.getmaxyx()
-    max_row, max_column = rows - 1, columns - 1
+    max_row, max_column = rows, columns
 
     curses.beep()
 
