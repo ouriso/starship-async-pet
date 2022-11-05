@@ -5,7 +5,7 @@ from random import randint, randrange
 
 from controls import read_controls
 from gun import fire
-from ship import ship_animate
+from ship import ship_animate, offsets_calc
 from stars import blink, generate_stars
 
 with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
@@ -28,8 +28,6 @@ def draw(canvas):
     stars = generate_stars(max_y, max_x)
 
     canvas.nodelay(True)
-    canvas.border()
-    canvas.refresh()
 
     corutines_add = [
         blink(canvas, row, column, randint(10, 30)) for row, column in stars
@@ -38,6 +36,7 @@ def draw(canvas):
     corutines = []
 
     for ship_frame in cycle(ship_frames):
+        canvas.border()
         corutines.extend(corutines_add)
         corutines.append(ship_animate(canvas, start_y, start_x, ship_frame))
         if need_fire:
@@ -57,6 +56,7 @@ def draw(canvas):
                 continue
 
         y_offset, x_offset, need_fire = read_controls(canvas)
+        y_offset, x_offset = offsets_calc(canvas, ship_frame, start_y, start_x, y_offset, x_offset)
         start_y += y_offset
         start_x += x_offset
 
