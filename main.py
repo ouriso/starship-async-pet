@@ -56,7 +56,9 @@ def draw(canvas):
                 continue
 
         y_offset, x_offset, need_fire = read_controls(canvas)
-        y_offset, x_offset = offsets_calc(canvas, ship_frame, start_y, start_x, y_offset, x_offset)
+        y_offset, x_offset = offsets_calc(
+            canvas, ship_frame, start_y, start_x, y_offset, x_offset
+        )
         start_y += y_offset
         start_x += x_offset
 
