@@ -1,6 +1,5 @@
 import curses
 from random import choice, randint
-from utils.sleep import sleep_ticks
 
 from config import BASE_DELAY
 from utils.sleep import Sleep
@@ -14,13 +13,13 @@ stars_stages = (
 )
 
 
-async def blink(canvas, row, column, delay, symbol='*'):
-    symbol = choice(stars_symbols)
-    await sleep_ticks(delay)
+async def star(canvas, row, column, delay, symbol='*'):
+    # delay before appearance
+    await Sleep(delay)
     while True:
         for ticks, style in stars_stages:
             canvas.addstr(row, column, symbol, style or curses.A_NORMAL)
-            await sleep_ticks(ticks)
+            await Sleep(ticks)
 
 
 def generate_stars(max_y: int, max_x: int, stars_number: int = 50) -> set:
