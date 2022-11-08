@@ -2,13 +2,15 @@ import curses
 from random import choice, randint
 from utils.sleep import sleep_ticks
 
+from config import BASE_DELAY
+from utils.sleep import Sleep
 
 stars_symbols = ['*', ':', '.', '+']
 stars_stages = (
-    (10, curses.A_DIM),
-    (3, None),
-    (5, curses.A_BOLD),
-    (3, None)
+    (BASE_DELAY, curses.A_DIM),
+    (3 * BASE_DELAY, None),
+    (5 * BASE_DELAY, curses.A_BOLD),
+    (2 * BASE_DELAY, None)
 )
 
 
