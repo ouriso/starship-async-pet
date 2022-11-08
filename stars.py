@@ -25,6 +25,7 @@ def generate_stars(max_y: int, max_x: int, stars_number: int = 50) -> set:
     stars = set()
     for _ in range(stars_number):
         stars.add(
-            (randint(1, max_y - 2), randint(1, max_x - 2))
+            (randint(1, max_y - 2), randint(1, max_x - 2),
+             choice(stars_symbols))
         )
     return stars
