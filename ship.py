@@ -1,7 +1,8 @@
 import curses
 
+from config import BASE_DELAY
 from frames import draw_frame, get_frame_size
-from utils.sleep import do_sleep
+from utils.sleep import Sleep
 
 ship_stages = [False, True]
 
@@ -12,7 +13,7 @@ async def ship_animate(canvas, ship_y, ship_x, ship_frame):
             canvas, ship_y, ship_x,
             ship_frame, is_negative
         )
-        await do_sleep()
+        await Sleep(BASE_DELAY)
 
 
 def offsets_calc(canvas, text, current_y, current_x, offset_y, offset_x):
