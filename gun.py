@@ -1,5 +1,7 @@
-import asyncio
 import curses
+
+from config import BASE_DELAY
+from utils.sleep import Sleep
 
 
 async def fire(
@@ -10,10 +12,9 @@ async def fire(
     row, column = start_row, start_column
 
     canvas.addstr(round(row), round(column), '*')
-    await asyncio.sleep(0)
-
+    await Sleep(BASE_DELAY)
     canvas.addstr(round(row), round(column), 'O')
-    await asyncio.sleep(0)
+    await Sleep(BASE_DELAY)
     canvas.addstr(round(row), round(column), ' ')
 
     row += rows_speed
@@ -35,7 +36,7 @@ async def fire(
 
     while 0 < row < max_row and 0 < column < max_column:
         canvas.addstr(round(row), round(column), symbol)
-        await asyncio.sleep(0)
+        await Sleep(BASE_DELAY)
         canvas.addstr(round(row), round(column), ' ')
         row += rows_speed
         column += columns_speed
