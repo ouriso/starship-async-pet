@@ -15,7 +15,7 @@ def draw_frame(canvas, start_row, start_column, text, negative=False):
 
         for column, symbol in enumerate(line, round(start_column)):
             if column < 0:
-              continue
+                continue
 
             if column >= columns_number:
                 break
