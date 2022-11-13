@@ -1,5 +1,5 @@
 # ticks base delay
-BASE_DELAY = 0.05
+BASE_DELAY = 0.1
 
 # control keys
 SPACE_KEY_CODE = 32
