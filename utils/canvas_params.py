@@ -2,8 +2,8 @@ import curses
 
 from entities.common import ObjectSize
 
-_CANVAS_WIDTH = 0
-_CANVAS_HEIGHT = 0
+_CANVAS_WIDTH = None
+_CANVAS_HEIGHT = None
 
 
 def set_border_params(canvas) -> None:
