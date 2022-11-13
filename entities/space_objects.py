@@ -1,7 +1,7 @@
 from abc import ABC
+from itertools import cycle
 from typing import Sequence
 
-from config import BASE_DELAY
 from entities.common import (
     ObjectBorders, ObjectAxesParams, ObjectSize,
     FrameStage
@@ -56,16 +56,19 @@ class SpaceObject(ABC):
         :param canvas: current WindowObject
         :return:
         """
-        for object_frame in self.frames:
+        for object_frame in cycle(self.frames):
             await self.change_frame_stages(canvas, object_frame)
 
     async def change_frame_stages(self, canvas, object_frame):
+        pos_y = self.position_y
+        pos_x = self.position_x
         for lifetime, style in self.stages:
             draw_frame(
-                canvas, self.position_y, self.position_x,
+                canvas, pos_y, pos_x,
                 object_frame, style
             )
-            await Sleep(BASE_DELAY * lifetime)
+            if lifetime:
+                await Sleep(lifetime)
 
     def offsets_calc(
             self, offset_y: int, offset_x: int
