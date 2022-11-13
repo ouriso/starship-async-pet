@@ -3,7 +3,6 @@ from itertools import cycle
 from random import randint, choice
 from typing import Set, Sequence
 
-from config import BASE_DELAY
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
 from utils.sleep import Sleep
@@ -12,11 +11,11 @@ stars_symbols = ['*', ':', '.', '+']
 
 
 class Star(SpaceObject):
-    stars_stages = (
-        FrameStage(BASE_DELAY, curses.A_DIM),
-        FrameStage(3 * BASE_DELAY, curses.A_NORMAL),
-        FrameStage(5 * BASE_DELAY, curses.A_BOLD),
-        FrameStage(2 * BASE_DELAY, curses.A_NORMAL)
+    stages: FrameStage = (
+        FrameStage(0.3, curses.A_DIM),
+        FrameStage(0.5, curses.A_NORMAL),
+        FrameStage(1.0, curses.A_BOLD),
+        FrameStage(0.3, curses.A_NORMAL)
     )
 
     def __init__(self, start_position_y: int, start_position_x: int,
@@ -30,12 +29,11 @@ class Star(SpaceObject):
             await self.change_frame_stages(canvas, object_frame)
 
     async def change_frame_stages(self, canvas, object_frame):
-        while True:
-            for lifetime, style in self.stages:
-                canvas.addstr(
-                    self.position_y, self.position_x,
-                    object_frame, style or curses.A_NORMAL)
-                await Sleep(BASE_DELAY * lifetime)
+        for lifetime, style in self.stages:
+            canvas.addstr(
+                self.position_y, self.position_x,
+                object_frame, style or curses.A_NORMAL)
+            await Sleep(lifetime)
 
 
 def generate_stars(
