@@ -1,6 +1,5 @@
 from abc import ABC
-from itertools import cycle
-from typing import Tuple, List
+from typing import Sequence
 
 from config import BASE_DELAY
 from entities.common import (
@@ -15,9 +14,9 @@ from utils.sleep import Sleep
 class SpaceObject(ABC):
     stages: FrameStage = ()
 
-    def __init__(self, start_position_x: int, start_position_y: int,
-                 frames: List[str],
-                 offset_step_x: int = 10, offset_step_y: int = 5):
+    def __init__(self, start_position_y: int, start_position_x: int,
+                 frames: Sequence[str],
+                 offset_step_y: int = 10, offset_step_x: int = 5):
         self.position_x = start_position_x
         self.position_y = start_position_y
         self.frames = frames
