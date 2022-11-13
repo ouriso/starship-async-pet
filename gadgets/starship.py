@@ -10,7 +10,7 @@ from gun import fire
 class StarShip(SpaceObject):
     stages = (
         FrameStage(BASE_DELAY, False),
-        FrameStage(BASE_DELAY, True)
+        FrameStage(0, True)
     )
 
     def fire(self, canvas) -> coroutine:
