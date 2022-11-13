@@ -15,7 +15,6 @@ def read_controls(canvas):
         pressed_key_code = canvas.getch()
 
         if pressed_key_code == -1:
-            # https://docs.python.org/3/library/curses.html#curses.window.getch
             break
 
         if pressed_key_code == UP_KEY_CODE:
