@@ -1,6 +1,7 @@
 import curses
+from itertools import cycle
 from random import randint, choice
-from typing import Set
+from typing import Set, Sequence
 
 from config import BASE_DELAY
 from entities.common import FrameStage
@@ -18,6 +19,16 @@ class Star(SpaceObject):
         FrameStage(2 * BASE_DELAY, curses.A_NORMAL)
     )
 
+    def __init__(self, start_position_y: int, start_position_x: int,
+                 frames: Sequence[str], appearance_delay: int):
+        super().__init__(start_position_y, start_position_x, frames)
+        self.appearance_delay = appearance_delay
+
+    async def animate(self, canvas) -> None:
+        await Sleep(self.appearance_delay)
+        for object_frame in cycle(self.frames):
+            await self.change_frame_stages(canvas, object_frame)
+
     async def change_frame_stages(self, canvas, object_frame):
         while True:
             for lifetime, style in self.stages:
@@ -34,7 +45,7 @@ def generate_stars(
     for _ in range(stars_number):
         star = Star(
             randint(1, max_y - 2), randint(1, max_x - 2),
-            [choice(stars_symbols)], 0, 0
+            [choice(stars_symbols)], randint(0, 5)
         )
         stars.add(star)
     return stars
