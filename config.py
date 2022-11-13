@@ -9,8 +9,8 @@ UP_KEY_CODE = 259
 DOWN_KEY_CODE = 258
 
 # starship direction speed
-COLUMNS_SPEED = 10
-ROWS_SPEED = 5
+COLUMNS_SPEED = 1
+ROWS_SPEED = 1
 
 # stars generator config
 STARS_NUMBER = 50
