@@ -1,13 +1,17 @@
 from random import randrange
 from types import coroutine
 
-from gadgets.space_objects import SpaceObject
+from config import BASE_DELAY
+from entities.common import FrameStage
+from entities.space_objects import SpaceObject
 from gun import fire
 
 
 class StarShip(SpaceObject):
-    position_x: int = None
-    position_y: int = None
+    stages = (
+        FrameStage(BASE_DELAY, False),
+        FrameStage(BASE_DELAY, True)
+    )
 
     def fire(self, canvas) -> coroutine:
         fire_routine = fire(
