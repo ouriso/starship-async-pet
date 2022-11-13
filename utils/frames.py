@@ -1,3 +1,6 @@
+from entities.common import ObjectSize
+
+
 def draw_frame(canvas, start_row, start_column, text, negative=False):
     """
     Draw multiline text fragment on canvas, erase text instead of drawing
@@ -38,4 +41,4 @@ def get_frame_size(text):
     lines = text.splitlines()
     rows = len(lines)
     columns = max([len(line) for line in lines])
-    return rows, columns
+    return ObjectSize(height=rows, width=columns)
