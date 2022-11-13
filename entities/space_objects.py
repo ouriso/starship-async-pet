@@ -16,7 +16,7 @@ class SpaceObject(ABC):
 
     def __init__(self, start_position_y: int, start_position_x: int,
                  frames: Sequence[str],
-                 offset_step_y: int = 10, offset_step_x: int = 5):
+                 offset_step_y: int = 5, offset_step_x: int = 10):
         self.position_x = start_position_x
         self.position_y = start_position_y
         self.frames = frames
@@ -85,11 +85,11 @@ class SpaceObject(ABC):
 
         if offset_y < 0:
             offset_y = max(offset_y, min_y - object_borders.top)
-        if offset_y > 0:
-            offset_y = min(offset_y, max_y - object_borders.bottom)
+        elif offset_y > 0:
+            offset_y = min(offset_y, max_y - object_borders.bottom - 1)
         if offset_x < 0:
             offset_x = max(offset_x, min_x - object_borders.left)
-        if offset_x > 0:
-            offset_x = min(offset_x, max_x - object_borders.right)
+        elif offset_x > 0:
+            offset_x = min(offset_x, max_x - object_borders.right - 1)
 
         return offset_y, offset_x
