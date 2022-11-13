@@ -13,6 +13,7 @@ from utils.sleep import Sleep
 
 
 class SpaceObject(ABC):
+    stages: FrameStage = ()
 
     def __init__(self, start_position_x: int, start_position_y: int,
                  frames: List[str],
@@ -56,14 +57,16 @@ class SpaceObject(ABC):
         :param canvas: current WindowObject
         :return:
         """
-        for object_frame in cycle(self.frames):
+        for object_frame in self.frames:
+            await self.change_frame_stages(canvas, object_frame)
 
-            for is_negative in (False, True):
-                draw_frame(
-                    canvas, self.position_y, self.position_x,
-                    object_frame, is_negative
-                )
-                await Sleep(BASE_DELAY)
+    async def change_frame_stages(self, canvas, object_frame):
+        for lifetime, style in self.stages:
+            draw_frame(
+                canvas, self.position_y, self.position_x,
+                object_frame, style
+            )
+            await Sleep(BASE_DELAY * lifetime)
 
     def offsets_calc(
             self, offset_y: int, offset_x: int
