@@ -7,7 +7,7 @@ from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
 
 
-class StarShip(SpaceObject):
+class BaseStarShip(SpaceObject):
     stages = (
         FrameStage(BASE_DELAY, False),
         FrameStage(0, True)
