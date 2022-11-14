@@ -4,7 +4,7 @@ import time
 from config import STARS_NUMBER
 from controls import read_controls
 from entities.star import generate_stars
-from gadgets.starship import StarShip
+from gadgets.starship import BaseStarShip
 from utils.canvas_params import set_border_params, get_border_params
 
 with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
@@ -25,7 +25,7 @@ def draw(canvas):
     )
 
     stars = generate_stars(max_y, max_x, STARS_NUMBER)
-    starship = StarShip(start_y, start_x, ship_frames)
+    starship = BaseStarShip(start_y, start_x, ship_frames)
 
     canvas.nodelay(True)
 
