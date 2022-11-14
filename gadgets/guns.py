@@ -2,57 +2,59 @@ from abc import ABC, abstractmethod
 from random import randrange
 
 from config import BASE_DELAY
-from gadgets.starship import StarShip
 from utils.canvas_params import get_border_params
 from utils.sleep import Sleep
 
 
 class Gun(ABC):
     delay = 0
-    y_speed: float = -0.3
-    x_speed: float = 0
-
-    def __init__(self, ship: StarShip):
-        self.starship = ship
 
     async def fire(
             self, canvas,
-            start_row: int, start_column: int,
-            y_speed: float = -0.3, x_speed: float = 0
+            start_position_y: int, start_position_x: int,
     ):
-        await self.flash_style(canvas)
-        await self.bullet_moving(canvas)
+        await self.flash_style(canvas, start_position_y, start_position_x)
+        await self.bullet_moving(canvas, start_position_y, start_position_x)
 
-    @abstractmethod
-    async def flash_style(self, canvas):
-        pass
-
-    @abstractmethod
-    async def bullet_moving(self, canvas):
-        pass
-
-
-class OldTroopersBlaster(Gun):
-    async def flash_style(self, canvas):
-        start_position_y, start_position_x = self.starship.current_position
-
+    @staticmethod
+    async def flash_style(
+            canvas, start_position_y: int, start_position_x: int
+    ):
+        """
+        Gun charging animation.
+        :param canvas: current WindowObject
+        :param start_position_y: charging start position on y-axis
+        :param start_position_x: charging start position on x-axis
+        """
         canvas.addstr(round(start_position_y), round(start_position_x), '*')
         await Sleep(BASE_DELAY / 2)
         canvas.addstr(round(start_position_y), round(start_position_x), 'O')
         await Sleep(BASE_DELAY / 2)
         canvas.addstr(round(start_position_y), round(start_position_x), ' ')
 
-    async def bullet_moving(self, canvas):
-        y_speed = randrange(-10, 0, 1) / 10
-        x_speed = randrange(-10, 0, 10) / 10
+    @abstractmethod
+    async def bullet_moving(self, canvas, position_y: int, position_x: int):
+        """
+        Bullet moving animation.
+        :param canvas: current WindowObject
+        :param position_y: bullet start position on y-axis
+        :param position_x: bullet start position on x-axis
+        :return:
+        """
+        pass
+
+
+class OldTroopersBlaster(Gun):
+    """
+    Single-shot blaster with randomly generated firing direction.
+    """
+    async def bullet_moving(self, canvas, position_y: int, position_x: int):
+        y_speed = randrange(-20, 0, 1) / 10
+        x_speed = randrange(-5, 5, 1) / 10
         symbol = self.bullet_symbol(y_speed, x_speed)
         max_y, max_x = get_border_params()
-        bullet_y = self.starship.position_y + round(y_speed)
-        bullet_x = (
-            self.starship.position_x
-            + round(self.starship.size.width / 2)
-            + round(x_speed)
-        )
+        bullet_y = position_y + round(y_speed)
+        bullet_x = position_x + round(x_speed)
 
         while 0 < bullet_y < max_y and 0 < bullet_x < max_x:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
@@ -62,7 +64,13 @@ class OldTroopersBlaster(Gun):
             bullet_x += x_speed
 
     @staticmethod
-    def bullet_symbol(y_speed: float, x_speed: float):
+    def bullet_symbol(y_speed: float, x_speed: float) -> str:
+        """
+        Changes bullet symbol depending on direction.
+        :param y_speed: moving speed by y-direction
+        :param x_speed: moving speed by x-direction
+        :return: symbol
+        """
         if x_speed == 0 or abs(y_speed) > 1.6 * abs(x_speed):
             symbol = '|'
         elif y_speed == 0 or abs(y_speed) < 0.6 * abs(x_speed):
