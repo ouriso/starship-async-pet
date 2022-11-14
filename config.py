@@ -13,4 +13,4 @@ COLUMNS_SPEED = 1
 ROWS_SPEED = 1
 
 # stars generator config
-STARS_NUMBER = 50
+STARS_DENSITY = 100
