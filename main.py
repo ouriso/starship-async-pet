@@ -1,7 +1,7 @@
 import curses
 import time
 
-from config import STARS_NUMBER
+from config import STARS_DENSITY
 from controls import read_controls
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
@@ -19,12 +19,13 @@ def draw(canvas):
     curses.curs_set(False)
     set_border_params(canvas)
     max_y, max_x = get_border_params()
+    stars_number = round(max_x * max_y / STARS_DENSITY)
 
     start_y, start_x = (
         round(max_y * 3 / 4), round(max_x / 2)
     )
 
-    stars = generate_stars(max_y, max_x, STARS_NUMBER)
+    stars = generate_stars(max_y, max_x, stars_number)
     starship = BaseStarShip(start_y, start_x, ship_frames)
 
     canvas.nodelay(True)
