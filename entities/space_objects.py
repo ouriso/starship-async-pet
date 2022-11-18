@@ -6,7 +6,7 @@ from entities.common import (
     ObjectBorders, ObjectAxesParams, ObjectSize,
     FrameStage
 )
-from utils.canvas_params import get_border_params
+from utils.canvas_dimensions import get_canvas_dimensions
 from utils.frames import draw_frame, get_frame_size
 from utils.sleep import Sleep
 
@@ -80,7 +80,7 @@ class SpaceObject(ABC):
         :param offset_x: expected x-axis offset
         :return:
         """
-        max_y, max_x = get_border_params()
+        height, width = get_canvas_dimensions()
         min_y = min_x = 1
         offset_y = self.offset_step_y * offset_y
         offset_x = self.offset_step_x * offset_x
@@ -89,10 +89,10 @@ class SpaceObject(ABC):
         if offset_y < 0:
             offset_y = max(offset_y, min_y - object_borders.top)
         elif offset_y > 0:
-            offset_y = min(offset_y, max_y - object_borders.bottom - 1)
+            offset_y = min(offset_y, height - object_borders.bottom - 1)
         if offset_x < 0:
             offset_x = max(offset_x, min_x - object_borders.left)
         elif offset_x > 0:
-            offset_x = min(offset_x, max_x - object_borders.right - 1)
+            offset_x = min(offset_x, width - object_borders.right - 1)
 
         return offset_y, offset_x

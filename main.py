@@ -6,7 +6,7 @@ from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X
 from controls import read_controls
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
-from utils.canvas_params import set_border_params, get_border_params
+from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
 
 
 def main():
@@ -16,14 +16,14 @@ def main():
 
 def draw(canvas):
     curses.curs_set(False)
-    set_border_params(canvas)
-    max_y, max_x = get_border_params()
-    stars_number = round(max_x * max_y / STARS_DENSITY)
+    set_canvas_dimensions(canvas)
+    height, width = get_canvas_dimensions()
+    stars_number = round(width * height / STARS_DENSITY)
 
     start_y = round(height * INIT_POS_RATIO_Y)
     start_x = round(width * INIT_POS_RATIO_X)
 
-    stars = generate_stars(max_y, max_x, stars_number)
+    stars = generate_stars(height, width, stars_number)
     starship = BaseStarShip(start_y, start_x, get_starship_frames())
 
     canvas.nodelay(True)

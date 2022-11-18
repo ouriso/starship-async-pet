@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from random import randrange
 
 from config import BASE_DELAY
-from utils.canvas_params import get_border_params
+from utils.canvas_dimensions import get_canvas_dimensions
 from utils.sleep import Sleep
 
 
@@ -52,11 +52,11 @@ class OldTroopersBlaster(Gun):
         y_speed = randrange(-20, 0, 1) / 10
         x_speed = randrange(-5, 5, 1) / 10
         symbol = self.bullet_symbol(y_speed, x_speed)
-        max_y, max_x = get_border_params()
+        height, width = get_canvas_dimensions()
         bullet_y = position_y + round(y_speed)
         bullet_x = position_x + round(x_speed)
 
-        while 0 < bullet_y < max_y and 0 < bullet_x < max_x:
+        while 0 < bullet_y < height and 0 < bullet_x < width:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
             await Sleep(BASE_DELAY)
             canvas.addstr(round(bullet_y), round(bullet_x), ' ')
