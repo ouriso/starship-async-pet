@@ -1,5 +1,6 @@
 import curses
 import time
+from typing import List
 
 from config import STARS_DENSITY
 from controls import read_controls
@@ -7,12 +8,10 @@ from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
 from utils.canvas_params import set_border_params, get_border_params
 
-with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
-    ship_frame_1 = fp.read()
 
-with open(r'./animations/ship_frame_2.txt', 'r', encoding='utf-8') as fp:
-    ship_frame_2 = fp.read()
-ship_frames = [ship_frame_1, ship_frame_1, ship_frame_2, ship_frame_2]
+def main():
+    curses.update_lines_cols()
+    curses.wrapper(draw)
 
 
 def draw(canvas):
@@ -26,7 +25,7 @@ def draw(canvas):
     )
 
     stars = generate_stars(max_y, max_x, stars_number)
-    starship = BaseStarShip(start_y, start_x, ship_frames)
+    starship = BaseStarShip(start_y, start_x, get_starship_frames())
 
     canvas.nodelay(True)
 
@@ -69,6 +68,15 @@ def draw(canvas):
         time.sleep(min_sleep)
 
 
+def get_starship_frames() -> List[str]:
+    with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
+        ship_frame_1 = fp.read()
+
+    with open(r'./animations/ship_frame_2.txt', 'r', encoding='utf-8') as fp:
+        ship_frame_2 = fp.read()
+    ship_frames = [ship_frame_1, ship_frame_1, ship_frame_2, ship_frame_2]
+    return ship_frames
+
+
 if __name__ == '__main__':
-    curses.update_lines_cols()
-    curses.wrapper(draw)
+    main()
