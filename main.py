@@ -9,14 +9,13 @@ from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
 
 
-def main():
-    curses.update_lines_cols()
-    curses.wrapper(draw)
+def main(canvas):
+    curses.curs_set(False)
+    set_canvas_dimensions(canvas)
+    draw(canvas)
 
 
 def draw(canvas):
-    curses.curs_set(False)
-    set_canvas_dimensions(canvas)
     height, width = get_canvas_dimensions()
     stars_number = round(width * height / STARS_DENSITY)
 
@@ -78,4 +77,6 @@ def get_starship_frames() -> List[str]:
 
 
 if __name__ == '__main__':
-    main()
+    curses.update_lines_cols()
+    curses.wrapper(main)
+
