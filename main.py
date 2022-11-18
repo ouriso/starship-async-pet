@@ -51,7 +51,6 @@ def draw(canvas):
         for _, coroutine in active_coroutines:
             try:
                 sleep_command = coroutine.send(None)
-                canvas.refresh()
             except StopIteration:
                 continue
             seconds_to_sleep = sleep_command.seconds
@@ -63,6 +62,7 @@ def draw(canvas):
         if need_fire:
             sleeping_coroutines.append([0, starship.fire(canvas)])
 
+        canvas.refresh()
         time.sleep(min_sleep)
 
 
