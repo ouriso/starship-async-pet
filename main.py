@@ -2,7 +2,7 @@ import curses
 import time
 from typing import List
 
-from config import STARS_DENSITY
+from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X
 from controls import read_controls
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
@@ -20,9 +20,8 @@ def draw(canvas):
     max_y, max_x = get_border_params()
     stars_number = round(max_x * max_y / STARS_DENSITY)
 
-    start_y, start_x = (
-        round(max_y * 3 / 4), round(max_x / 2)
-    )
+    start_y = round(height * INIT_POS_RATIO_Y)
+    start_x = round(width * INIT_POS_RATIO_X)
 
     stars = generate_stars(max_y, max_x, stars_number)
     starship = BaseStarShip(start_y, start_x, get_starship_frames())
