@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from random import randrange
 
-from config import BASE_DELAY
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.sleep import sleep
 
@@ -27,9 +26,9 @@ class Gun(ABC):
         :param start_position_x: charging start position on x-axis
         """
         canvas.addstr(round(start_position_y), round(start_position_x), '*')
-        await sleep(BASE_DELAY / 2)
+        await sleep()
         canvas.addstr(round(start_position_y), round(start_position_x), 'O')
-        await sleep(BASE_DELAY / 2)
+        await sleep()
         canvas.addstr(round(start_position_y), round(start_position_x), ' ')
 
     @abstractmethod
@@ -58,7 +57,7 @@ class OldTroopersBlaster(Gun):
 
         while 0 < bullet_y < height and 0 < bullet_x < width:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
-            await sleep(BASE_DELAY)
+            await sleep(2)
             canvas.addstr(round(bullet_y), round(bullet_x), ' ')
             bullet_y += y_speed
             bullet_x += x_speed
