@@ -2,7 +2,7 @@ import curses
 import time
 from typing import List
 
-from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X
+from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X, BASE_DELAY
 from controls import read_controls
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
@@ -27,43 +27,28 @@ def draw(canvas):
 
     canvas.nodelay(True)
 
-    sleeping_coroutines = [
-        *[[0, star.animate(canvas)] for star in stars],
-        [0, starship.animate(canvas)]
+    coroutines = [
+        *[star.animate(canvas) for star in stars],
+        starship.animate(canvas)
     ]
 
     while True:
         canvas.border()
 
-        min_sleep, _ = min(sleeping_coroutines, key=lambda pair: pair[0])
-        sleeping_coroutines = [
-            [timeout - min_sleep, coroutine]
-            for timeout, coroutine in sleeping_coroutines]
-
-        # делим корутины на активные и спящие
-        active_coroutines = [
-            [timeout, coroutine]
-            for timeout, coroutine in sleeping_coroutines if timeout <= 0]
-        sleeping_coroutines = [
-            [timeout, coroutine]
-            for timeout, coroutine in sleeping_coroutines if timeout > 0]
-
-        for _, coroutine in active_coroutines:
+        for coroutine in coroutines.copy():
             try:
-                sleep_command = coroutine.send(None)
+                coroutine.send(None)
             except StopIteration:
-                continue
-            seconds_to_sleep = sleep_command.seconds
-            sleeping_coroutines.append([seconds_to_sleep, coroutine])
+                coroutines.remove(coroutine)
 
         y_offset, x_offset, need_fire = read_controls(canvas)
         if y_offset != 0 or x_offset != 0:
             starship.change_position(y_offset, x_offset)
         if need_fire:
-            sleeping_coroutines.append([0, starship.fire(canvas)])
+            coroutines.append(starship.fire(canvas))
 
         canvas.refresh()
-        time.sleep(min_sleep)
+        time.sleep(BASE_DELAY)
 
 
 def get_starship_frames() -> List[str]:
@@ -79,4 +64,3 @@ def get_starship_frames() -> List[str]:
 if __name__ == '__main__':
     curses.update_lines_cols()
     curses.wrapper(main)
-
