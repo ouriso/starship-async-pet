@@ -8,7 +8,7 @@ from entities.common import (
 )
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.frames import draw_frame, get_frame_size
-from utils.sleep import Sleep
+from utils.sleep import sleep
 
 
 class SpaceObject(ABC):
@@ -68,7 +68,7 @@ class SpaceObject(ABC):
                 object_frame, style
             )
             if lifetime:
-                await Sleep(lifetime)
+                await sleep(lifetime)
 
     def offsets_calc(
             self, offset_y: int, offset_x: int

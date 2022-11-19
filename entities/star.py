@@ -5,7 +5,7 @@ from typing import Set, Sequence
 
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
-from utils.sleep import Sleep
+from utils.sleep import sleep
 
 stars_symbols = ['*', ':', '.', '+']
 
@@ -24,7 +24,7 @@ class Star(SpaceObject):
         self.appearance_delay = appearance_delay
 
     async def animate(self, canvas) -> None:
-        await Sleep(self.appearance_delay)
+        await sleep(self.appearance_delay)
         for object_frame in cycle(self.frames):
             await self.change_frame_stages(canvas, object_frame)
 
@@ -33,7 +33,7 @@ class Star(SpaceObject):
             canvas.addstr(
                 self.position_y, self.position_x,
                 object_frame, style or curses.A_NORMAL)
-            await Sleep(lifetime)
+            await sleep(lifetime)
 
 
 def generate_stars(

@@ -1,8 +1,6 @@
-class EventLoop:
-    def __await__(self):
-        return (yield self)
+import asyncio
 
 
-class Sleep(EventLoop):
-    def __init__(self, seconds: float):
-        self.seconds = seconds
+async def sleep(ticks=1):
+    for _ in range(ticks):
+        await asyncio.sleep(0)
