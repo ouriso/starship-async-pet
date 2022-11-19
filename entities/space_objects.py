@@ -107,10 +107,10 @@ class SpaceObject(ABC):
         if offset_y < 0:
             offset_y = max(offset_y, min_y - object_borders.top)
         elif offset_y > 0:
-            offset_y = min(offset_y, height - object_borders.bottom - 1)
+            offset_y = min(offset_y, height - object_borders.bottom)
         if offset_x < 0:
             offset_x = max(offset_x, min_x - object_borders.left)
         elif offset_x > 0:
-            offset_x = min(offset_x, width - object_borders.right - 1)
+            offset_x = min(offset_x, width - object_borders.right)
 
         return offset_y, offset_x
