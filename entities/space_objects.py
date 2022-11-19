@@ -12,6 +12,10 @@ from utils.sleep import sleep
 
 
 class SpaceObject(ABC):
+    """
+    Abstract class that implements the positioning of an object
+     in the current window.
+    """
     stages: FrameStage = ()
 
     def __init__(self, start_position_y: int, start_position_x: int,

@@ -17,6 +17,7 @@ def main(canvas):
 
 
 def draw(canvas):
+    """Main drawings."""
     max_y, max_x = get_canvas_dimensions()
     stars_number = round(max_x * max_y / STARS_DENSITY)
 
@@ -51,6 +52,10 @@ def draw(canvas):
 
 
 def get_starship_frames() -> List[str]:
+    """
+    Read files with starship frames and returns it as list of strings.
+    :return: list of starship frames
+    """
     with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
         ship_frame_1 = fp.read()
 

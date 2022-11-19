@@ -7,6 +7,11 @@ _CANVAS_HEIGHT = None
 
 
 def set_canvas_dimensions(canvas) -> None:
+    """
+    Saves current window height and width.
+    :param canvas: current WindowObject
+    :return:
+    """
     global _CANVAS_HEIGHT
     global _CANVAS_WIDTH
 
@@ -17,7 +22,8 @@ def set_canvas_dimensions(canvas) -> None:
 
 
 def get_canvas_dimensions() -> ObjectSize:
-    global _CANVAS_HEIGHT
-    global _CANVAS_WIDTH
-
+    """
+    Receives current window height and width.
+    :return: window height and width
+    """
     return ObjectSize(height=_CANVAS_HEIGHT, width=_CANVAS_WIDTH)

@@ -9,6 +9,9 @@ from utils.sleep import calculate_ticks_number
 
 
 class BaseStarShip(SpaceObject):
+    """
+    Implements the positioning of a starship in the current window.
+    """
     stages = (
         FrameStage(calculate_ticks_number(2 * BASE_DELAY), False),
         FrameStage(0, True)
@@ -20,6 +23,11 @@ class BaseStarShip(SpaceObject):
         self.gun = OldTroopersBlaster()
 
     def fire(self, canvas) -> coroutine:
+        """
+        Creates coroutine with shot animation.
+        :param canvas: current WindowObject
+        :return: animation of firing
+        """
         # the shooting animation starts at the top of the ship
         # and in the middle of its width
         fire_routine = self.gun.fire(

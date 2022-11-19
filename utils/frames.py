@@ -40,5 +40,5 @@ def get_frame_size(text):
      """
     lines = text.splitlines()
     rows = len(lines)
-    columns = max([len(line) for line in lines])
+    columns = max((len(line) for line in lines))
     return ObjectSize(height=rows, width=columns)

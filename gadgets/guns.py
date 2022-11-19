@@ -6,6 +6,10 @@ from utils.sleep import sleep
 
 
 class Gun(ABC):
+    """
+    Abstract class that implements the firing of weapons
+    installed on the starship.
+    """
     delay = 0
 
     async def fire(
@@ -40,7 +44,6 @@ class Gun(ABC):
         :param position_x: bullet start position on x-axis
         :return:
         """
-        pass
 
 
 class OldTroopersBlaster(Gun):

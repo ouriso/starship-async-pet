@@ -10,6 +10,9 @@ from utils.sleep import sleep, calculate_ticks_number
 
 
 class Star(SpaceObject):
+    """
+    SpaceObject as a sparkling star.
+    """
     stages: FrameStage = (
         FrameStage(calculate_ticks_number(0.3), curses.A_DIM),
         FrameStage(calculate_ticks_number(0.5), curses.A_NORMAL),
