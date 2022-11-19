@@ -12,11 +12,11 @@ class Gun(ABC):
             self, canvas,
             start_position_y: int, start_position_x: int,
     ):
-        await self.flash_style(canvas, start_position_y, start_position_x)
-        await self.bullet_moving(canvas, start_position_y, start_position_x)
+        await self.animate_flash(canvas, start_position_y, start_position_x)
+        await self.animate_bullet(canvas, start_position_y, start_position_x)
 
     @staticmethod
-    async def flash_style(
+    async def animate_flash(
             canvas, start_position_y: int, start_position_x: int
     ):
         """
@@ -32,7 +32,7 @@ class Gun(ABC):
         canvas.addstr(round(start_position_y), round(start_position_x), ' ')
 
     @abstractmethod
-    async def bullet_moving(self, canvas, position_y: int, position_x: int):
+    async def animate_bullet(self, canvas, position_y: int, position_x: int):
         """
         Bullet moving animation.
         :param canvas: current WindowObject
@@ -47,15 +47,15 @@ class OldTroopersBlaster(Gun):
     """
     Single-shot blaster with randomly generated firing direction.
     """
-    async def bullet_moving(self, canvas, position_y: int, position_x: int):
+    async def animate_bullet(self, canvas, position_y: int, position_x: int):
         y_speed = randrange(-20, 0, 1) / 10
         x_speed = randrange(-5, 5, 1) / 10
-        symbol = self.bullet_symbol(y_speed, x_speed)
-        height, width = get_canvas_dimensions()
+        symbol = self.get_bullet_symbol_by_direction(y_speed, x_speed)
+        max_y, max_x = get_canvas_dimensions()
         bullet_y = position_y + round(y_speed)
         bullet_x = position_x + round(x_speed)
 
-        while 0 < bullet_y < height and 0 < bullet_x < width:
+        while 0 < bullet_y < max_y and 0 < bullet_x < max_x:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
             await sleep(2)
             canvas.addstr(round(bullet_y), round(bullet_x), ' ')
@@ -63,7 +63,7 @@ class OldTroopersBlaster(Gun):
             bullet_x += x_speed
 
     @staticmethod
-    def bullet_symbol(y_speed: float, x_speed: float) -> str:
+    def get_bullet_symbol_by_direction(y_speed: float, x_speed: float) -> str:
         """
         Changes bullet symbol depending on direction.
         :param y_speed: moving speed by y-direction

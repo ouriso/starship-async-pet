@@ -13,7 +13,7 @@ async def sleep(ticks: int = 1) -> None:
         await asyncio.sleep(0)
 
 
-def calc_ticks_number(seconds_to_sleep: float) -> int:
+def calculate_ticks_number(seconds_to_sleep: float) -> int:
     """
     Calculate the number of ticks before coroutine exhaustion.
     :param seconds_to_sleep: expected seconds to sleep

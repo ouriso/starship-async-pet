@@ -5,12 +5,12 @@ from config import BASE_DELAY
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
-from utils.sleep import calc_ticks_number
+from utils.sleep import calculate_ticks_number
 
 
 class BaseStarShip(SpaceObject):
     stages = (
-        FrameStage(calc_ticks_number(2 * BASE_DELAY), False),
+        FrameStage(calculate_ticks_number(2 * BASE_DELAY), False),
         FrameStage(0, True)
     )
 

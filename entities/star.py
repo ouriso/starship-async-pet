@@ -6,15 +6,15 @@ from typing import Set, Sequence
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.sleep import sleep, calc_ticks_number
+from utils.sleep import sleep, calculate_ticks_number
 
 
 class Star(SpaceObject):
     stages: FrameStage = (
-        FrameStage(calc_ticks_number(0.3), curses.A_DIM),
-        FrameStage(calc_ticks_number(0.5), curses.A_NORMAL),
-        FrameStage(calc_ticks_number(1.0), curses.A_BOLD),
-        FrameStage(calc_ticks_number(0.3), curses.A_NORMAL)
+        FrameStage(calculate_ticks_number(0.3), curses.A_DIM),
+        FrameStage(calculate_ticks_number(0.5), curses.A_NORMAL),
+        FrameStage(calculate_ticks_number(1.0), curses.A_BOLD),
+        FrameStage(calculate_ticks_number(0.3), curses.A_NORMAL)
     )
 
     def __init__(self, start_position_y: int, start_position_x: int,
@@ -48,7 +48,7 @@ def generate_stars(stars_number: int = 50) -> Set[Star]:
     for _ in range(stars_number):
         star = Star(
             randint(1, height - 1), randint(1, width - 1),
-            [choice(stars_symbols)], calc_ticks_number(randint(0, 3))
+            [choice(stars_symbols)], calculate_ticks_number(randint(0, 3))
         )
         stars.add(star)
     return stars

@@ -58,7 +58,7 @@ class SpaceObject(ABC):
         :param offset_x: x-axis offset
         :return: None
         """
-        offset_y, offset_x = self.offsets_calc(offset_y, offset_x)
+        offset_y, offset_x = self.calc_offsets(offset_y, offset_x)
         self.position_y += offset_y
         self.position_x += offset_x
 
@@ -81,14 +81,11 @@ class SpaceObject(ABC):
         pos_y = self.position_y
         pos_x = self.position_x
         for lifetime, style in self.stages:
-            draw_frame(
-                canvas, pos_y, pos_x,
-                object_frame, style
-            )
+            draw_frame(canvas, pos_y, pos_x, object_frame, style)
             if lifetime:
                 await sleep(lifetime)
 
-    def offsets_calc(
+    def calc_offsets(
             self, offset_y: int, offset_x: int
     ) -> ObjectAxesParams:
         """
@@ -96,9 +93,9 @@ class SpaceObject(ABC):
         If not returns new possible values.
         :param offset_y: expected y-axis offset
         :param offset_x: expected x-axis offset
-        :return:
+        :return: calculated y and x offsets
         """
-        height, width = get_canvas_dimensions()
+        max_y, max_x = get_canvas_dimensions()
         min_y = min_x = 1
         offset_y = self.offset_step_y * offset_y
         offset_x = self.offset_step_x * offset_x
@@ -107,10 +104,10 @@ class SpaceObject(ABC):
         if offset_y < 0:
             offset_y = max(offset_y, min_y - object_borders.top)
         elif offset_y > 0:
-            offset_y = min(offset_y, height - object_borders.bottom)
+            offset_y = min(offset_y, max_y - object_borders.bottom)
         if offset_x < 0:
             offset_x = max(offset_x, min_x - object_borders.left)
         elif offset_x > 0:
-            offset_x = min(offset_x, width - object_borders.right)
+            offset_x = min(offset_x, max_x - object_borders.right)
 
         return offset_y, offset_x
