@@ -20,7 +20,10 @@ class BaseStarShip(SpaceObject):
         self.gun = OldTroopersBlaster()
 
     def fire(self, canvas) -> coroutine:
+        # the shooting animation starts at the top of the ship
+        # and in the middle of its width
         fire_routine = self.gun.fire(
-            canvas, self.position_y, self.position_x + 2
+            canvas, self.position_y,
+            self.position_x + round(self.dimensions.width / 2)
         )
         return fire_routine
