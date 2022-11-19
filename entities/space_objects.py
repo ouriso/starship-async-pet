@@ -24,19 +24,31 @@ class SpaceObject(ABC):
         self.offset_step_y = offset_step_y
 
     @property
-    def size(self) -> ObjectSize:
+    def dimensions(self) -> ObjectSize:
+        """
+        Returns self dimensions by y and x axes.
+        :return: self height and width
+        """
         return get_frame_size(self.frames[0])
 
     @property
     def current_position(self) -> ObjectAxesParams:
+        """
+        Returns self current position by y and x axes.
+        :return: y and x coordinates as the starting point for drawing the frame
+        """
         return ObjectAxesParams(axis_y=self.position_y, axis_x=self.position_x)
 
     def object_borders(self) -> ObjectBorders:
+        """
+        Returns the coordinates of all self borders.
+        :return: top, bottom, left and right coordinates
+        """
         return ObjectBorders(
             top=self.position_y,
-            bottom=self.position_y + self.size.height,
+            bottom=self.position_y + self.dimensions.height,
             left=self.position_x,
-            right=self.position_x + self.size.width
+            right=self.position_x + self.dimensions.width
         )
 
     def change_position(self, offset_y: int, offset_x: int) -> None:
@@ -60,6 +72,12 @@ class SpaceObject(ABC):
             await self.change_frame_stages(canvas, object_frame)
 
     async def change_frame_stages(self, canvas, object_frame):
+        """
+        Draws and removes current frame sequentially.
+        :param canvas: current WindowObject
+        :param object_frame: current frame to draw
+        :return:
+        """
         pos_y = self.position_y
         pos_x = self.position_x
         for lifetime, style in self.stages:
