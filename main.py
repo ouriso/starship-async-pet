@@ -12,6 +12,7 @@ from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
 def main(canvas):
     curses.curs_set(False)
     set_canvas_dimensions(canvas)
+    canvas.nodelay(True)
     draw(canvas)
 
 
@@ -24,8 +25,6 @@ def draw(canvas):
 
     stars = generate_stars(stars_number)
     starship = BaseStarShip(start_y, start_x, get_starship_frames())
-
-    canvas.nodelay(True)
 
     coroutines = [
         *[star.animate(canvas) for star in stars],

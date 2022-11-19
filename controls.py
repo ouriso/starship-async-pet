@@ -11,7 +11,6 @@ def read_controls(canvas):
     space_pressed = False
 
     while True:
-        canvas.nodelay(True)
         pressed_key_code = canvas.getch()
 
         if pressed_key_code == -1:
