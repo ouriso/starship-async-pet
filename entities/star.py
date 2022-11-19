@@ -41,13 +41,13 @@ def generate_stars(stars_number: int = 50) -> Set[Star]:
     :param stars_number: number of stars to be generated
     :return: set of new Stars
     """
-    height, width = get_canvas_dimensions()
+    max_y, max_x = get_canvas_dimensions()
     stars_symbols = ['*', ':', '.', '+']
 
     stars = set()
     for _ in range(stars_number):
         star = Star(
-            randint(1, height - 1), randint(1, width - 1),
+            randint(1, max_y), randint(1, max_x),
             [choice(stars_symbols)], calculate_ticks_number(randint(0, 3))
         )
         stars.add(star)
