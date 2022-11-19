@@ -5,6 +5,7 @@ from typing import Set, Sequence
 
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
+from utils.canvas_dimensions import get_canvas_dimensions
 from utils.sleep import sleep, calc_ticks_number
 
 
@@ -34,14 +35,19 @@ class Star(SpaceObject):
             await sleep(lifetime)
 
 
-def generate_stars(
-        max_y: int, max_x: int, stars_number: int = 50
-) -> Set[Star]:
+def generate_stars(stars_number: int = 50) -> Set[Star]:
+    """
+    Randomly generates new set of stars.
+    :param stars_number: number of stars to be generated
+    :return: set of new Stars
+    """
+    height, width = get_canvas_dimensions()
     stars_symbols = ['*', ':', '.', '+']
+
     stars = set()
     for _ in range(stars_number):
         star = Star(
-            randint(1, max_y - 2), randint(1, max_x - 2),
+            randint(1, height - 1), randint(1, width - 1),
             [choice(stars_symbols)], calc_ticks_number(randint(0, 3))
         )
         stars.add(star)

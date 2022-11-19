@@ -22,7 +22,7 @@ def draw(canvas):
     start_y = round(height * INIT_POS_RATIO_Y)
     start_x = round(width * INIT_POS_RATIO_X)
 
-    stars = generate_stars(height, width, stars_number)
+    stars = generate_stars(stars_number)
     starship = BaseStarShip(start_y, start_x, get_starship_frames())
 
     canvas.nodelay(True)
