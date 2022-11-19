@@ -48,12 +48,13 @@ class OldTroopersBlaster(Gun):
     Single-shot blaster with randomly generated firing direction.
     """
     async def animate_bullet(self, canvas, position_y: int, position_x: int):
+        # random generation of the bullet direction
         y_speed = randrange(-20, 0, 1) / 10
         x_speed = randrange(-5, 5, 1) / 10
         symbol = self.get_bullet_symbol_by_direction(y_speed, x_speed)
         max_y, max_x = get_canvas_dimensions()
-        bullet_y = position_y + round(y_speed)
-        bullet_x = position_x + round(x_speed)
+        bullet_y = position_y + y_speed
+        bullet_x = position_x + x_speed
 
         while 0 < bullet_y < max_y and 0 < bullet_x < max_x:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
@@ -70,6 +71,8 @@ class OldTroopersBlaster(Gun):
         :param x_speed: moving speed by x-direction
         :return: symbol
         """
+        # 1.6 and 0.6 are experimentally calculated ratios of y_ and x_speed
+        # indicating that the bullet symbol needs to be changed
         if x_speed == 0 or abs(y_speed) > 1.6 * abs(x_speed):
             symbol = '|'
         elif y_speed == 0 or abs(y_speed) < 0.6 * abs(x_speed):
