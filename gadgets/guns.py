@@ -55,11 +55,11 @@ class OldTroopersBlaster(Gun):
         y_speed = randrange(-20, 0, 1) / 10
         x_speed = randrange(-5, 5, 1) / 10
         symbol = self.get_bullet_symbol_by_direction(y_speed, x_speed)
-        max_y, max_x = get_canvas_dimensions()
+        height, width = get_canvas_dimensions()
         bullet_y = position_y + y_speed
         bullet_x = position_x + x_speed
 
-        while 0 < bullet_y < max_y and 0 < bullet_x < max_x:
+        while 0 < bullet_y < height and 0 < bullet_x < width:
             canvas.addstr(round(bullet_y), round(bullet_x), symbol)
             await sleep(2)
             canvas.addstr(round(bullet_y), round(bullet_x), ' ')

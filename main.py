@@ -18,11 +18,11 @@ def main(canvas):
 
 def draw(canvas):
     """Main drawings."""
-    max_y, max_x = get_canvas_dimensions()
-    stars_number = round(max_x * max_y / STARS_DENSITY)
+    height, width = get_canvas_dimensions()
+    stars_number = round(width * height / STARS_DENSITY)
 
-    start_y = round(max_y * INIT_POS_RATIO_Y)
-    start_x = round(max_x * INIT_POS_RATIO_X)
+    start_y = round(height * INIT_POS_RATIO_Y)
+    start_x = round(width * INIT_POS_RATIO_X)
 
     stars = generate_stars(stars_number)
     starship_frames = ['./animations/ship_frame_1.txt',

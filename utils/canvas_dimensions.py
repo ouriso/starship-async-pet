@@ -16,9 +16,12 @@ def set_canvas_dimensions(canvas) -> None:
     global _CANVAS_WIDTH
 
     if _CANVAS_WIDTH is None or _CANVAS_HEIGHT is None:
-        max_y, max_x = curses.window.getmaxyx(canvas)
-        _CANVAS_HEIGHT = max_y - 1
-        _CANVAS_WIDTH = max_x - 1
+        # according to the documentation the function `getmaxyx()`
+        # returns the height and width of the window
+        height, width = curses.window.getmaxyx(canvas)
+        # extreme positions of drawn objects
+        _CANVAS_HEIGHT = height - 1
+        _CANVAS_WIDTH = width - 1
 
 
 def get_canvas_dimensions() -> ObjectSize:
