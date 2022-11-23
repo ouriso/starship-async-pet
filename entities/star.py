@@ -1,5 +1,4 @@
 import curses
-from itertools import cycle
 from random import randint, choice
 from typing import Set, Sequence
 
@@ -27,14 +26,10 @@ class Star(SpaceObject):
 
     async def animate(self, canvas) -> None:
         await sleep(self.appearance_delay)
-        for object_frame in cycle(self.frames):
-            await self.change_frame_stages(canvas, object_frame)
-
-    async def change_frame_stages(self, canvas, object_frame):
         for lifetime, style in self.stages:
             canvas.addstr(
                 self.position_y, self.position_x,
-                object_frame, style or curses.A_NORMAL)
+                self.frames[0], style or curses.A_NORMAL)
             await sleep(lifetime)
 
 
