@@ -55,17 +55,7 @@ class SpaceObject(ABC):
             right=self.position_x + self.dimensions.width
         )
 
-    def change_position(self, offset_y: int, offset_x: int) -> None:
-        """
-        Offsets the object's position by the passed values.
-        :param offset_y: y-axis offset
-        :param offset_x: x-axis offset
-        :return: None
-        """
-        offset_y, offset_x = self.calc_offsets(offset_y, offset_x)
-        self.position_y += offset_y
-        self.position_x += offset_x
-
+    @abstractmethod
     async def animate(self, canvas) -> None:
         """
         Animates object moving.
@@ -75,15 +65,17 @@ class SpaceObject(ABC):
         for object_frame in cycle(self.frames):
             await self.change_frame_stages(canvas, object_frame)
 
-    async def change_frame_stages(self, canvas, object_frame):
+    def change_position(self, offset_y: int, offset_x: int) -> None:
         """
-        Draws and removes current frame sequentially.
-        :param canvas: current WindowObject
-        :param object_frame: current frame to draw
+        Changes the position of the object depending on the offset arguments
+        and maximum available offset values.
+        :param offset_y: y-axis offset direction
+        :param offset_x: x-axis offset direction
         :return:
         """
         height, width = get_canvas_dimensions()
         min_y = min_x = 1
+        # calculate expected offset values
         offset_y = self.offset_step_y * offset_y
         offset_x = self.offset_step_x * offset_x
         object_borders = self.object_borders()
@@ -97,4 +89,5 @@ class SpaceObject(ABC):
         elif offset_x > 0:
             offset_x = min(offset_x, width - object_borders.right)
 
-        return offset_y, offset_x
+        self.position_y += offset_y
+        self.position_x += offset_x
