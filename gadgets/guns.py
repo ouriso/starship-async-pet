@@ -76,9 +76,9 @@ class OldTroopersBlaster(Gun):
         """
         # 1.6 and 0.6 are experimentally calculated ratios of y_ and x_speed
         # indicating that the bullet symbol needs to be changed
-        if x_speed == 0 or abs(y_speed) > 1.6 * abs(x_speed):
+        if not x_speed or abs(y_speed) > 1.6 * abs(x_speed):
             symbol = '|'
-        elif y_speed == 0 or abs(y_speed) < 0.6 * abs(x_speed):
+        elif not y_speed or abs(y_speed) < 0.6 * abs(x_speed):
             symbol = '-'
         elif (y_speed * x_speed) > 0:
             symbol = '\\'

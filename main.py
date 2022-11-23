@@ -45,8 +45,10 @@ def draw(canvas):
             except StopIteration:
                 coroutines.remove(coroutine)
 
+        # calling function `read_controls` inside a coroutine function
+        # may cause keypress to be skipped
         y_offset, x_offset, need_fire = read_controls(canvas)
-        if y_offset != 0 or x_offset != 0:
+        if y_offset or x_offset:
             starship.change_position(y_offset, x_offset)
         if need_fire:
             coroutines.append(starship.fire(canvas))
