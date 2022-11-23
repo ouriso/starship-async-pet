@@ -1,12 +1,12 @@
 import curses
 import time
-from typing import List
 
 from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X, BASE_DELAY
 from controls import read_controls
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
+from utils.frames import get_frames_list
 
 
 def main(canvas):
@@ -25,7 +25,11 @@ def draw(canvas):
     start_x = round(max_x * INIT_POS_RATIO_X)
 
     stars = generate_stars(stars_number)
-    starship = BaseStarShip(start_y, start_x, get_starship_frames())
+    starship_frames = ['./animations/ship_frame_1.txt',
+                       './animations/ship_frame_2.txt']
+    starship = BaseStarShip(
+        start_y, start_x, get_frames_list(starship_frames)
+    )
 
     coroutines = [
         *[star.animate(canvas) for star in stars],
@@ -49,20 +53,6 @@ def draw(canvas):
 
         canvas.refresh()
         time.sleep(BASE_DELAY)
-
-
-def get_starship_frames() -> List[str]:
-    """
-    Read files with starship frames and returns it as list of strings.
-    :return: list of starship frames
-    """
-    with open(r'./animations/ship_frame_1.txt', 'r', encoding='utf-8') as fp:
-        ship_frame_1 = fp.read()
-
-    with open(r'./animations/ship_frame_2.txt', 'r', encoding='utf-8') as fp:
-        ship_frame_2 = fp.read()
-    ship_frames = [ship_frame_1, ship_frame_1, ship_frame_2, ship_frame_2]
-    return ship_frames
 
 
 if __name__ == '__main__':
