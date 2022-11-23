@@ -1,14 +1,12 @@
-from abc import ABC
-from itertools import cycle
+from abc import ABC, abstractmethod
 from typing import Sequence
 
 from entities.common import (
-    ObjectBorders, ObjectAxesParams, ObjectSize,
+    ObjectBorders, ObjectSize,
     FrameStage
 )
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.frames import draw_frame, get_frame_size
-from utils.sleep import sleep
+from utils.frames import get_frame_size
 
 
 class SpaceObject(ABC):
@@ -35,14 +33,6 @@ class SpaceObject(ABC):
         """
         return get_frame_size(self.frames[0])
 
-    @property
-    def current_position(self) -> ObjectAxesParams:
-        """
-        Returns self current position by y and x axes.
-        :return: y and x coordinates as the starting point for drawing the frame
-        """
-        return ObjectAxesParams(axis_y=self.position_y, axis_x=self.position_x)
-
     def object_borders(self) -> ObjectBorders:
         """
         Returns the coordinates of all self borders.
@@ -62,8 +52,6 @@ class SpaceObject(ABC):
         :param canvas: current WindowObject
         :return:
         """
-        for object_frame in cycle(self.frames):
-            await self.change_frame_stages(canvas, object_frame)
 
     def change_position(self, offset_y: int, offset_x: int) -> None:
         """
