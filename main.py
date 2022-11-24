@@ -3,9 +3,11 @@ import time
 
 from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X, BASE_DELAY
 from controls import read_controls
+from entities.garbage import Garbage, generate_garbage
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
+from utils.event_loop import append_coroutine, get_coroutines
 from utils.frames import get_frames_list
 
 
@@ -31,10 +33,12 @@ def draw(canvas):
         start_y, start_x, get_frames_list(starship_frames)
     )
 
-    coroutines = [
+    coroutines = get_coroutines()
+    coroutines.extend([
         *[star.animate(canvas) for star in stars],
-        starship.animate(canvas)
-    ]
+        starship.animate(canvas),
+        generate_garbage(canvas)
+    ])
 
     while True:
         canvas.border()
