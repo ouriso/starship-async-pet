@@ -24,6 +24,8 @@ class SpaceObject(ABC):
         self.frames = frames
         self.offset_step_x = offset_step_x
         self.offset_step_y = offset_step_y
+        self.speed_by_y = 0
+        self.speed_by_x = 0
 
     @property
     def dimensions(self) -> ObjectSize:
