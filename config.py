@@ -16,5 +16,8 @@ INIT_POS_RATIO_X = 0.5  # in the middle of the x-axis
 COLUMNS_SPEED = 1
 ROWS_SPEED = 1
 
+COLUMNS_SPEED_LIMIT = 10
+ROWS_SPEED_LIMIT = 5
+
 # stars generator config
 STARS_DENSITY = 100
