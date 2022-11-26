@@ -36,26 +36,17 @@ def draw(canvas):
     coroutines = get_coroutines()
     coroutines.extend([
         *[star.animate(canvas) for star in stars],
-        starship.animate(canvas),
+        starship.run_starship(canvas),
         generate_garbage(canvas)
     ])
 
     while True:
         canvas.border()
-
         for coroutine in coroutines.copy():
             try:
                 coroutine.send(None)
             except StopIteration:
                 coroutines.remove(coroutine)
-
-        # calling function `read_controls` inside a coroutine function
-        # may cause keypress to be skipped
-        y_offset, x_offset, need_fire = read_controls(canvas)
-        if y_offset or x_offset:
-            starship.change_position(y_offset, x_offset)
-        if need_fire:
-            coroutines.append(starship.fire(canvas))
 
         canvas.refresh()
         time.sleep(BASE_DELAY)

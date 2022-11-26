@@ -4,9 +4,11 @@ from types import coroutine
 from typing import Sequence
 
 from config import ROWS_SPEED_LIMIT, COLUMNS_SPEED_LIMIT
+from controls import read_controls
 from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
 from utils.canvas_dimensions import get_canvas_dimensions
+from utils.event_loop import append_coroutine
 from utils.frames import draw_frame
 from utils.sleep import sleep
 
@@ -52,6 +54,15 @@ class BaseStarShip(SpaceObject):
             draw_frame(canvas, pos_y, pos_x, frame)
             await sleep(self.frame_lifetime)
             draw_frame(canvas, pos_y, pos_x, frame, True)
+
+    async def run_starship(self, canvas):
+        append_coroutine(self.animate(canvas))
+        while True:
+            rows_direction, columns_direction, need_fire = read_controls(canvas)
+            self.change_position(rows_direction, columns_direction)
+            if need_fire:
+                append_coroutine(self.fire(canvas))
+            await sleep()
 
     @staticmethod
     def _limit(value, speed_limit: int):
