@@ -11,24 +11,25 @@ def read_controls(canvas):
     space_pressed = False
 
     while True:
-        pressed_key_code = canvas.getch()
+        # simultaneous reading of multiple key presses
+        pressed_key_codes = [canvas.getch() for _ in range(3)]
 
-        if pressed_key_code == -1:
+        if pressed_key_codes[0] == -1:
             break
 
-        if pressed_key_code == UP_KEY_CODE:
+        if UP_KEY_CODE in pressed_key_codes:
             rows_direction = -ROWS_SPEED
 
-        if pressed_key_code == DOWN_KEY_CODE:
+        if DOWN_KEY_CODE in pressed_key_codes:
             rows_direction = ROWS_SPEED
 
-        if pressed_key_code == RIGHT_KEY_CODE:
+        if RIGHT_KEY_CODE in pressed_key_codes:
             columns_direction = COLUMNS_SPEED
 
-        if pressed_key_code == LEFT_KEY_CODE:
+        if LEFT_KEY_CODE in pressed_key_codes:
             columns_direction = -COLUMNS_SPEED
 
-        if pressed_key_code == SPACE_KEY_CODE:
+        if SPACE_KEY_CODE in pressed_key_codes:
             space_pressed = True
 
     return rows_direction, columns_direction, space_pressed
