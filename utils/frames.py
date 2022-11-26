@@ -1,6 +1,10 @@
-from typing import List
+import os
+from typing import List, Union, TypeVar
 
 from entities.common import ObjectSize
+
+
+PathLike = TypeVar('PathLike', str, bytes, os.PathLike)
 
 
 def draw_frame(canvas, start_row, start_column, text, negative=False):
@@ -46,15 +50,20 @@ def get_frame_size(text):
     return ObjectSize(height=rows, width=columns)
 
 
-def get_frames_list(frame_files: List[str]) -> List[str]:
+def get_frames_from_files(
+        frame_files: Union[List[PathLike], PathLike]) -> Union[List[str], str]:
     """
     Reads files with any frames and returns them as list of strings.
     :param frame_files: list of files to read
     :return: list of frames as string objects
     """
+    if not isinstance(frame_files, list):
+        frame_files = [frame_files]
     frames = []
     for frame_file in frame_files:
         with open(frame_file, 'r', encoding='utf-8') as fp:
             frames.append(fp.read())
 
+    if len(frame_files) == 1:
+        return frames[0]
     return frames
