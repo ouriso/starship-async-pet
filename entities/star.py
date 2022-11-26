@@ -29,7 +29,7 @@ class Star(SpaceObject):
         for lifetime, style in self.stages:
             canvas.addstr(
                 self.position_y, self.position_x,
-                self.frames[0], style or curses.A_NORMAL)
+                self.frame, style or curses.A_NORMAL)
             await sleep(lifetime)
 
 

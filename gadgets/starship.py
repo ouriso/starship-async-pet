@@ -1,7 +1,6 @@
 import math
 from itertools import cycle
 from types import coroutine
-from typing import Sequence
 
 from config import ROWS_SPEED_LIMIT, COLUMNS_SPEED_LIMIT
 from controls import read_controls
@@ -21,11 +20,7 @@ class BaseStarShip(SpaceObject):
     speed_fading = 0.8
     speed_limit_y = ROWS_SPEED_LIMIT
     speed_limit_x = COLUMNS_SPEED_LIMIT
-
-    def __init__(self, start_position_y: int, start_position_x: int,
-                 frames: Sequence[str]):
-        super().__init__(start_position_y, start_position_x, frames)
-        self.gun = OldTroopersBlaster()
+    gun = OldTroopersBlaster()
 
     def fire(self, canvas) -> coroutine:
         """
@@ -150,6 +145,7 @@ class BaseStarShip(SpaceObject):
 
         object_borders = self.object_borders()
 
+        # TODO убрать дублирование
         if self.speed_by_y < 0:
             self.speed_by_y = max(self.speed_by_y, min_y - object_borders.top)
         elif self.speed_by_y > 0:

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Sequence
+from typing import Sequence, Union
 
 from entities.common import (
     ObjectBorders, ObjectSize,
@@ -17,15 +17,20 @@ class SpaceObject(ABC):
     stages: FrameStage = ()
 
     def __init__(self, start_position_y: int, start_position_x: int,
-                 frames: Sequence[str],
-                 offset_step_y: int = 5, offset_step_x: int = 10):
+                 frames: Union[str, Sequence[str]],
+                 speed_by_y: int = 5, speed_by_x: int = 10):
         self.position_x = start_position_x
         self.position_y = start_position_y
         self.frames = frames
-        self.offset_step_x = offset_step_x
-        self.offset_step_y = offset_step_y
-        self.speed_by_y = 0
-        self.speed_by_x = 0
+        self.speed_by_y = speed_by_y
+        self.speed_by_x = speed_by_x
+
+    @property
+    def frame(self) -> str:
+        if isinstance(self.frames, str):
+            return self.frames
+        else:
+            return self.frames[0]
 
     @property
     def dimensions(self) -> ObjectSize:
@@ -33,7 +38,7 @@ class SpaceObject(ABC):
         Returns self dimensions by y and x axes.
         :return: self height and width
         """
-        return get_frame_size(self.frames[0])
+        return get_frame_size(self.frame)
 
     def object_borders(self) -> ObjectBorders:
         """
@@ -66,8 +71,8 @@ class SpaceObject(ABC):
         height, width = get_canvas_dimensions()
         min_y = min_x = 1
         # calculate expected offset values
-        offset_y = self.offset_step_y * offset_y
-        offset_x = self.offset_step_x * offset_x
+        offset_y = self.speed_by_y * offset_y
+        offset_x = self.speed_by_x * offset_x
         object_borders = self.object_borders()
 
         if offset_y < 0:
