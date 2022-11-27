@@ -18,7 +18,7 @@ class SpaceObject(ABC):
 
     def __init__(self, start_position_y: int, start_position_x: int,
                  frames: Union[str, Sequence[str]],
-                 speed_by_y: int = 5, speed_by_x: int = 10):
+                 speed_by_y: int = 0, speed_by_x: int = 0):
         self.position_x = start_position_x
         self.position_y = start_position_y
         self.frames = frames
