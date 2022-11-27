@@ -1,9 +1,10 @@
 from os import listdir, path
 from random import choice, randint
 
+from entities.obstacle import Obstacle
 from entities.space_objects import SpaceObject
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import append_coroutine
+from utils.event_loop import append_coroutine, get_obstacles
 from utils.frames import draw_frame, get_frame_size, get_frames_from_files
 from utils.sleep import sleep
 
@@ -26,6 +27,7 @@ class Garbage(SpaceObject):
 
 async def generate_garbage(canvas) -> None:
     height, width = get_canvas_dimensions()
+    obstacles = get_obstacles()
 
     frames_dir = './animations/garbage'
     files_with_frames = [
@@ -41,3 +43,4 @@ async def generate_garbage(canvas) -> None:
 
         new_garbage = Garbage(pos_y, pos_x, garbage_frames, 1, 0)
         append_coroutine(new_garbage.animate(canvas))
+        obstacles.append(Obstacle(new_garbage))
