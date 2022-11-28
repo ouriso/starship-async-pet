@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from random import randrange
 
 from utils.canvas_dimensions import get_canvas_dimensions
+from utils.event_loop import get_obstacles
 from utils.sleep import sleep
 
 
@@ -65,6 +66,15 @@ class OldTroopersBlaster(Gun):
             canvas.addstr(round(bullet_y), round(bullet_x), ' ')
             bullet_y += y_speed
             bullet_x += x_speed
+
+            for obstacle in get_obstacles():
+                is_collision = obstacle.has_collision(
+                    bullet_y, bullet_y + 1,
+                    bullet_x, bullet_x + 1
+                )
+
+                if is_collision:
+                    return
 
     @staticmethod
     def get_bullet_symbol_by_direction(y_speed: float, x_speed: float) -> str:
