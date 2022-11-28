@@ -29,7 +29,7 @@ class Obstacle:
         bottom = self.space_object.object_borders().bottom
         left = self.space_object.object_borders().left
         right = self.space_object.object_borders().right
-        return any([
+        is_collision = any([
             _is_point_inside(top, bottom, left, right,
                              another_object_top, another_object_left),
             _is_point_inside(top, bottom, left, right,
@@ -42,6 +42,9 @@ class Obstacle:
                              another_object_left, another_object_right,
                              bottom, right)
         ])
+        if is_collision:
+            self.space_object.set_need_to_stop()
+        return is_collision
 
 
 def _is_point_inside(obstacle_top, obstacle_bottom,
@@ -68,6 +71,8 @@ async def show_obstacles(canvas, obstacles: List[Obstacle]):
 
         for obstacle in obstacles:
             if obstacle.space_object.position_y >= height:
+                continue
+            elif obstacle.space_object.need_to_stop:
                 continue
             boxes.append(obstacle.dump_bounding_box())
 
