@@ -16,7 +16,7 @@ class BaseStarShip(SpaceObject):
     """
     Implements the positioning of a starship in the current window.
     """
-    frame_lifetime = 4
+    frame_lifetime = 2
     speed_fading = 0.8
     speed_limit_y = ROWS_SPEED_LIMIT
     speed_limit_x = COLUMNS_SPEED_LIMIT

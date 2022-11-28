@@ -28,6 +28,8 @@ def draw(canvas):
 
     stars = generate_stars(stars_number)
     starship_frames = ['./animations/ship_frame_1.txt',
+                       './animations/ship_frame_1.txt',
+                       './animations/ship_frame_2.txt',
                        './animations/ship_frame_2.txt']
     starship = BaseStarShip(
         start_y, start_x, get_frames_from_files(starship_frames)
