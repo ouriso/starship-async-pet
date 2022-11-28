@@ -14,6 +14,9 @@ class Garbage(SpaceObject):
         height, width = get_canvas_dimensions()
 
         while self.position_y < height:
+            if self.need_to_stop:
+                self.position_y = height + 1
+                return
             draw_frame(
                 canvas, self.position_y, self.position_x, self.frame
             )
