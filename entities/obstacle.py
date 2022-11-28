@@ -23,6 +23,34 @@ class Obstacle:
         start_pos_x = self.space_object.position_x - 1
         return start_pos_y, start_pos_x, self.get_bounding_box_frame()
 
+    def has_collision(self, another_object_top, another_object_bottom,
+                      another_object_left, another_object_right) -> bool:
+        top = self.space_object.object_borders().top
+        bottom = self.space_object.object_borders().bottom
+        left = self.space_object.object_borders().left
+        right = self.space_object.object_borders().right
+        return any([
+            _is_point_inside(top, bottom, left, right,
+                             another_object_top, another_object_left),
+            _is_point_inside(top, bottom, left, right,
+                             another_object_bottom, another_object_right),
+
+            _is_point_inside(another_object_top, another_object_bottom,
+                             another_object_left, another_object_right,
+                             top, left),
+            _is_point_inside(another_object_top, another_object_bottom,
+                             another_object_left, another_object_right,
+                             bottom, right)
+        ])
+
+
+def _is_point_inside(obstacle_top, obstacle_bottom,
+                     obstacle_left, obstacle_right,
+                     point_pos_y, point_pos_x) -> bool:
+    rows_flag = obstacle_top <= point_pos_y < obstacle_bottom
+    columns_flag = obstacle_left <= point_pos_x < obstacle_right
+    return rows_flag and columns_flag
+
 
 def _get_bounding_box_lines(height, width):
     yield ' ' + '-' * width + ' '
