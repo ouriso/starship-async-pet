@@ -15,6 +15,7 @@ class SpaceObject(ABC):
      in the current window.
     """
     stages: FrameStage = ()
+    need_to_stop: bool = False
 
     def __init__(self, start_position_y: int, start_position_x: int,
                  frames: Union[str, Sequence[str]],
@@ -86,3 +87,7 @@ class SpaceObject(ABC):
 
         self.position_y += offset_y
         self.position_x += offset_x
+
+    def set_need_to_stop(self):
+        self.need_to_stop = True
+
