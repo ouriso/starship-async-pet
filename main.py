@@ -3,11 +3,10 @@ import time
 
 from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X, BASE_DELAY
 from entities.garbage import generate_garbage
-from entities.obstacle import show_obstacles
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
-from utils.event_loop import get_coroutines, get_obstacles
+from utils.event_loop import get_coroutines
 from utils.frames import get_frames_from_files
 
 
@@ -35,14 +34,11 @@ def draw(canvas):
         start_y, start_x, get_frames_from_files(starship_frames)
     )
 
-    obstacles = get_obstacles()
-
     coroutines = get_coroutines()
     coroutines.extend([
         *[star.animate(canvas) for star in stars],
         starship.run_starship(canvas),
         generate_garbage(canvas),
-        show_obstacles(canvas, obstacles)
     ])
 
     while True:
