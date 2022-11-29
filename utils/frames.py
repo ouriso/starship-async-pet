@@ -2,7 +2,7 @@ import os
 from typing import List, Union, TypeVar
 
 from entities.common import ObjectSize
-
+from utils.sleep import sleep
 
 PathLike = TypeVar('PathLike', str, bytes, os.PathLike)
 
@@ -37,6 +37,25 @@ def draw_frame(canvas, start_row, start_column, text, negative=False):
 
             symbol = symbol if not negative else ' '
             canvas.addch(row, column, symbol)
+
+
+async def update_frame(canvas, pos_y: int, pos_x: int, frame: str,
+                       base_sleep_ticks: int = 2) -> None:
+    """
+    Draws and removes passed frame.
+    :param canvas: current WindowObject
+    :param pos_y: frame start position by y-axis
+    :param pos_x: frame start position by x-axis
+    :param frame: frame to draw
+    :param base_sleep_ticks: awaiting delay
+    """
+    draw_frame(
+        canvas, pos_y, pos_x, frame
+    )
+    await sleep(base_sleep_ticks)
+    draw_frame(
+        canvas, pos_y, pos_x, frame, negative=True
+    )
 
 
 def get_frame_size(text):
