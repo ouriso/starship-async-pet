@@ -1,10 +1,7 @@
 from types import coroutine
 from typing import List
 
-from entities.obstacle import Obstacle
-
 COROUTINES: List[coroutine] = []
-OBSTACLES: List[Obstacle] = []
 
 
 def get_coroutines():
@@ -22,6 +19,3 @@ def delete_coroutine(exhaustion_coroutine):
     COROUTINES.remove(exhaustion_coroutine)
 
 
-def get_obstacles():
-    global OBSTACLES
-    return OBSTACLES

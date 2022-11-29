@@ -1,10 +1,10 @@
 from os import listdir, path
 from random import choice, randint
 
-from entities.obstacle import Obstacle
+from entities.obstacle import Obstacle, get_obstacles
 from entities.space_objects import SpaceObject
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import append_coroutine, get_obstacles, get_coroutines
+from utils.event_loop import append_coroutine, get_coroutines
 from utils.frames import draw_frame, get_frame_size, get_frames_from_files
 from utils.sleep import sleep
 

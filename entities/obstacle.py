@@ -86,3 +86,25 @@ async def show_obstacles(canvas, obstacles: List[Obstacle]):
 
         for row, column, frame in boxes:
             draw_frame(canvas, row, column, frame, negative=True)
+
+
+def check_object_collisions(
+        position_y: int, position_x: int, object_height: int, object_width: int
+) -> bool:
+    for obstacle in get_obstacles():
+        is_collision = obstacle.has_collision(
+            position_y, position_y + object_height,
+            position_x, position_x + object_width
+        )
+
+        if is_collision:
+            return True
+    return False
+
+
+OBSTACLES: List[Obstacle] = []
+
+
+def get_obstacles():
+    global OBSTACLES
+    return OBSTACLES

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from random import randrange
 
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import get_obstacles
+from entities.obstacle import get_obstacles
 from utils.sleep import sleep
 
 
