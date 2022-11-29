@@ -4,11 +4,13 @@ from types import coroutine
 
 from config import ROWS_SPEED_LIMIT, COLUMNS_SPEED_LIMIT
 from controls import read_controls
+from entities.obstacle import check_object_collisions
 from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.event_loop import append_coroutine
-from utils.frames import draw_frame
+from utils.frames import draw_frame, get_frame_size, update_frame
+from utils.game_over import game_over_animate
 from utils.sleep import sleep
 
 
@@ -46,6 +48,13 @@ class BaseStarShip(SpaceObject):
             # saving the current position to prevent incorrect erasing
             pos_y = self.position_y
             pos_x = self.position_x
+
+            if check_object_collisions(
+                    pos_y, pos_x, self.dimensions.height, self.dimensions.width
+            ):
+                append_coroutine(self.explode(canvas))
+                return
+
             draw_frame(canvas, pos_y, pos_x, frame)
             await sleep(self.frame_lifetime)
             draw_frame(canvas, pos_y, pos_x, frame, True)
@@ -158,3 +167,13 @@ class BaseStarShip(SpaceObject):
 
         self.position_y += self.speed_by_y
         self.position_x += self.speed_by_x
+
+    async def explode(self, canvas) -> None:
+        explode_size = get_frame_size(self.explode_frames[0])
+        center_y = self.position_y + self.dimensions.height / 2
+        center_x = self.position_x + self.dimensions.width / 2
+        explode_y = center_y - explode_size.height / 2
+        explode_x = center_x - explode_size.width / 2
+        for frame in self.explode_frames:
+            await update_frame(canvas, explode_y, explode_x, frame)
+        append_coroutine(game_over_animate(canvas))
