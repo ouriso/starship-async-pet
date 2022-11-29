@@ -12,6 +12,9 @@ class Obstacle:
         self.space_object = space_object
         self.uid = uid
 
+    def __eq__(self, other):
+        return other == self.space_object
+
     def get_bounding_box_frame(self):
         # increment box size to compensate obstacle movement
         height = self.space_object.dimensions.height + 1
