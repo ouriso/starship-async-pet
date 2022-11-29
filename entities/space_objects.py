@@ -6,7 +6,7 @@ from entities.common import (
     FrameStage
 )
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.frames import get_frame_size
+from utils.frames import get_frame_size, get_frames_from_files
 
 
 class SpaceObject(ABC):
@@ -14,6 +14,9 @@ class SpaceObject(ABC):
     Abstract class that implements the positioning of an object
      in the current window.
     """
+    explode_frames = get_frames_from_files(
+        r'./animations/explosion.txt'
+    ).split(',\n')
     stages: FrameStage = ()
     need_to_stop: bool = False
 
