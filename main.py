@@ -8,6 +8,7 @@ from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
 from utils.event_loop import get_coroutines
 from utils.frames import get_frames_from_files
+from utils.game_year import animate_year
 
 
 def main(canvas):
@@ -33,12 +34,14 @@ def draw(canvas):
     starship = BaseStarShip(
         start_y, start_x, get_frames_from_files(starship_frames)
     )
+    new_win = canvas.derwin(6, 40, height - 6, width - 40)
 
     coroutines = get_coroutines()
     coroutines.extend([
         *[star.animate(canvas) for star in stars],
         starship.run_starship(canvas),
         generate_garbage(canvas),
+        animate_year(new_win)
     ])
 
     while True:
@@ -50,6 +53,7 @@ def draw(canvas):
                 coroutines.remove(coroutine)
 
         canvas.refresh()
+        new_win.refresh()
         time.sleep(BASE_DELAY)
 
 
