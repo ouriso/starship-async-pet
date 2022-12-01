@@ -16,8 +16,7 @@ class Garbage(SpaceObject):
 
         while self.position_y < height:
             if self.need_to_stop:
-                coroutines = get_coroutines()
-                coroutines.append(self.explode(canvas))
+                append_coroutine(self.explode(canvas))
                 get_obstacles().remove(self)
                 return
             await update_frame(
