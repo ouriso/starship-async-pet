@@ -50,7 +50,6 @@ def draw(canvas):
                 coroutines.remove(coroutine)
 
         canvas.refresh()
-        new_win.refresh()
         time.sleep(BASE_DELAY)
 
 
