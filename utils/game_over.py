@@ -15,8 +15,6 @@ positions_delta = (
 
 
 async def game_over_animate(canvas, ship_explosion: coroutine):
-    # ship explodes before the "game over" text appears
-    await ship_explosion
     frame: str = get_frames_from_file(r'./animations/game_over.txt')[0]
     frame_size = get_frame_size(frame)
     height, width = get_canvas_dimensions()

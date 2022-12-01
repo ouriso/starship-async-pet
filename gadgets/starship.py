@@ -49,15 +49,10 @@ class BaseStarShip(SpaceObject):
             pos_y = self.position_y
             pos_x = self.position_x
 
-            if check_object_collisions(
-                    pos_y, pos_x, self.dimensions.height, self.dimensions.width
-            ):
-                append_coroutine(
-                    game_over_animate(canvas, self.explode(canvas))
-                )
-                return
-
             await update_frame(canvas, pos_y, pos_x, frame, self.frame_lifetime)
+
+            if self.need_to_stop:
+                return
 
     async def run_starship(self, canvas):
         append_coroutine(self.animate(canvas))
@@ -67,6 +62,17 @@ class BaseStarShip(SpaceObject):
             if need_fire:
                 append_coroutine(self.fire(canvas))
             await sleep()
+            if check_object_collisions(
+                self.position_y, self.position_x, *self.dimensions
+            ):
+                break
+
+        # if collision was happened stop ship animation, explode and game_over
+        self.set_need_to_stop()
+        await self.explode(canvas)
+        append_coroutine(
+            game_over_animate(canvas, self.explode(canvas))
+        )
 
     @staticmethod
     def _limit(value, speed_limit: int):
@@ -84,8 +90,8 @@ class BaseStarShip(SpaceObject):
 
         speed_fraction = current_speed / speed_limit
 
-        # если корабль стоит на месте, дергаем резко
-        # если корабль уже летит быстро, прибавляем медленно
+        # if the ship is stationary - accelerate quickly
+        # if the ship is already flying fast - accelerate slowly
         delta = math.cos(speed_fraction) * 0.75
 
         result_speed = current_speed + delta * speed_direction
@@ -176,4 +182,3 @@ class BaseStarShip(SpaceObject):
         explode_x = center_x - explode_size.width / 2
         for frame in self.explode_frames:
             await update_frame(canvas, explode_y, explode_x, frame)
-        append_coroutine(game_over_animate(canvas))
