@@ -1,5 +1,5 @@
 import os
-from typing import List, Union, TypeVar
+from typing import List, TypeVar
 
 from entities.common import ObjectSize
 from utils.sleep import sleep
@@ -69,20 +69,15 @@ def get_frame_size(text):
     return ObjectSize(height=rows, width=columns)
 
 
-def get_frames_from_files(
-        frame_files: Union[List[PathLike], PathLike]) -> Union[List[str], str]:
+def get_frames_from_file(
+        frame_file: PathLike, frames_separator: str = ',\n') -> List[str]:
     """
-    Reads files with any frames and returns them as list of strings.
-    :param frame_files: list of files to read
+    Reads file with any number of frames and returns them as list of strings.
+    :param frame_file: file to read
+    :param frames_separator: sequence of characters to split text into frames
     :return: list of frames as string objects
     """
-    if not isinstance(frame_files, list):
-        frame_files = [frame_files]
-    frames = []
-    for frame_file in frame_files:
-        with open(frame_file, 'r', encoding='utf-8') as fp:
-            frames.append(fp.read())
+    with open(frame_file, 'r', encoding='utf-8') as fp:
+        frames = fp.read().split(frames_separator)
 
-    if len(frame_files) == 1:
-        return frames[0]
     return frames

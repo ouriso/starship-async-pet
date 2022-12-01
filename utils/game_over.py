@@ -3,7 +3,7 @@ from itertools import cycle
 from entities.common import ObjectAxesParams
 from entities.obstacle import check_object_collisions
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.frames import get_frames_from_files, get_frame_size, update_frame
+from utils.frames import get_frames_from_file, get_frame_size, update_frame
 
 positions_delta = (
     ObjectAxesParams(2, 2),
@@ -14,7 +14,7 @@ positions_delta = (
 
 
 async def game_over_animate(canvas):
-    frame = get_frames_from_files(r'./animations/game_over.txt')
+    frame: str = get_frames_from_file(r'./animations/game_over.txt')[0]
     frame_size = get_frame_size(frame)
     height, width = get_canvas_dimensions()
     start_pos_y = height / 2 - frame_size.height / 2

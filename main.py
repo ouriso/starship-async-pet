@@ -7,7 +7,7 @@ from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
 from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
 from utils.event_loop import get_coroutines
-from utils.frames import get_frames_from_files
+from utils.frames import get_frames_from_file
 from utils.game_year import animate_year
 
 
@@ -27,12 +27,9 @@ def draw(canvas):
     start_x = round(width * INIT_POS_RATIO_X)
 
     stars = generate_stars(stars_number)
-    starship_frames = ['./animations/ship_frame_1.txt',
-                       './animations/ship_frame_1.txt',
-                       './animations/ship_frame_2.txt',
-                       './animations/ship_frame_2.txt']
+    starship_frames = get_frames_from_file('./animations/ship_frame.txt')
     starship = BaseStarShip(
-        start_y, start_x, get_frames_from_files(starship_frames)
+        start_y, start_x, starship_frames
     )
     new_win = canvas.derwin(6, 40, height - 6, width - 40)
 
