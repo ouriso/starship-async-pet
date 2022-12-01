@@ -1,4 +1,5 @@
 from itertools import cycle
+from types import coroutine
 
 from entities.common import ObjectAxesParams
 from entities.obstacle import check_object_collisions
@@ -13,7 +14,9 @@ positions_delta = (
 )
 
 
-async def game_over_animate(canvas):
+async def game_over_animate(canvas, ship_explosion: coroutine):
+    # ship explodes before the "game over" text appears
+    await ship_explosion
     frame: str = get_frames_from_file(r'./animations/game_over.txt')[0]
     frame_size = get_frame_size(frame)
     height, width = get_canvas_dimensions()
