@@ -1,11 +1,13 @@
 from random import choice, randint
+from typing import Optional
 
 from entities.obstacle import Obstacle, get_obstacles
 from entities.space_objects import SpaceObject
 from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import append_coroutine, get_coroutines
+from utils.event_loop import append_coroutine
 from utils.frames import get_frame_size, get_frames_from_file, \
     update_frame
+from utils.game_year import get_current_year
 from utils.sleep import sleep
 
 
@@ -42,7 +44,7 @@ async def generate_garbage(canvas) -> None:
     garbage_frames = get_frames_from_file('./animations/garbage.txt')
 
     while True:
-        await sleep(randint(4, 15))
+        await sleep(get_garbage_delay_tics(get_current_year()))
         frame = choice(garbage_frames)
         frame_height, frame_width = get_frame_size(frame)
 
@@ -52,3 +54,26 @@ async def generate_garbage(canvas) -> None:
         new_garbage = Garbage(pos_y, pos_x, frame, 1, 0)
         append_coroutine(new_garbage.animate(canvas))
         obstacles.append(Obstacle(new_garbage))
+
+
+def get_garbage_delay_tics(year) -> Optional[int]:
+    """
+    Calculates the delay between the creation of new garbage objects
+    depending on the current game year.
+    :param year: current game year
+    :return: calculated delay
+    """
+    if year < 1961:
+        return 40
+    elif year < 1969:
+        return 20
+    elif year < 1981:
+        return 14
+    elif year < 1995:
+        return 10
+    elif year < 2010:
+        return 8
+    elif year < 2020:
+        return 6
+    else:
+        return 2
