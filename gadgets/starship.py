@@ -9,7 +9,7 @@ from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.event_loop import append_coroutine
-from utils.frames import draw_frame, get_frame_size, update_frame
+from utils.frames import get_frame_size, update_frame
 from utils.game_over import game_over_animate
 from utils.sleep import sleep
 
@@ -52,12 +52,12 @@ class BaseStarShip(SpaceObject):
             if check_object_collisions(
                     pos_y, pos_x, self.dimensions.height, self.dimensions.width
             ):
-                append_coroutine(self.explode(canvas))
+                append_coroutine(
+                    game_over_animate(canvas, self.explode(canvas))
+                )
                 return
 
-            draw_frame(canvas, pos_y, pos_x, frame)
-            await sleep(self.frame_lifetime)
-            draw_frame(canvas, pos_y, pos_x, frame, True)
+            await update_frame(canvas, pos_y, pos_x, frame, self.frame_lifetime)
 
     async def run_starship(self, canvas):
         append_coroutine(self.animate(canvas))
