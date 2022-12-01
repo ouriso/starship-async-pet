@@ -5,7 +5,6 @@ from entities.common import (
     ObjectBorders, ObjectSize,
     FrameStage
 )
-from utils.canvas_dimensions import get_canvas_dimensions
 from utils.frames import get_frame_size, get_frames_from_file
 
 
@@ -62,33 +61,6 @@ class SpaceObject(ABC):
         :param canvas: current WindowObject
         :return:
         """
-
-    def change_position(self, offset_y: int, offset_x: int) -> None:
-        """
-        Changes the position of the object depending on the offset arguments
-        and maximum available offset values.
-        :param offset_y: y-axis offset direction
-        :param offset_x: x-axis offset direction
-        :return:
-        """
-        height, width = get_canvas_dimensions()
-        min_y = min_x = 1
-        # calculate expected offset values
-        offset_y = self.speed_by_y * offset_y
-        offset_x = self.speed_by_x * offset_x
-        object_borders = self.object_borders()
-
-        if offset_y < 0:
-            offset_y = max(offset_y, min_y - object_borders.top)
-        elif offset_y > 0:
-            offset_y = min(offset_y, height - object_borders.bottom)
-        if offset_x < 0:
-            offset_x = max(offset_x, min_x - object_borders.left)
-        elif offset_x > 0:
-            offset_x = min(offset_x, width - object_borders.right)
-
-        self.position_y += offset_y
-        self.position_x += offset_x
 
     def set_need_to_stop(self):
         self.need_to_stop = True
