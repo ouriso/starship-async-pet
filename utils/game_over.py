@@ -1,5 +1,4 @@
 from itertools import cycle
-from types import coroutine
 
 from entities.common import ObjectAxesParams
 from entities.obstacle import check_object_collisions
@@ -14,7 +13,11 @@ positions_delta = (
 )
 
 
-async def game_over_animate(canvas, ship_explosion: coroutine):
+async def game_over_animate(canvas):
+    """
+    Animates Game Over text on the window center.
+    :param canvas: current WindowObject
+    """
     frame: str = get_frames_from_file(r'./animations/game_over.txt')[0]
     frame_size = get_frame_size(frame)
     height, width = get_canvas_dimensions()
@@ -22,6 +25,7 @@ async def game_over_animate(canvas, ship_explosion: coroutine):
     start_pos_x = width / 2 - frame_size.width / 2
 
     for offset_y, offset_x in cycle(positions_delta):
+        # destroys obstacles to avoid overlap
         check_object_collisions(
             start_pos_y, start_pos_x, frame_size.height, frame_size.width
         )

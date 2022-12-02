@@ -1,5 +1,6 @@
 from json import load
 
+from config import GAME_YEAR_DURATION
 from utils.event_loop import append_coroutine
 from utils.frames import update_frame
 from utils.sleep import calculate_ticks_number
@@ -33,17 +34,25 @@ def get_current_year() -> int:
     return YEAR
 
 
-with open('./animations/numbers.json', 'r') as fp:
-    numbers = load(fp)
-
-
-def generate_text_year(year: int):
-    text = zip(*[numbers[num].split('\n') for num in str(year)])
+def generate_text_from_number(number: int) -> str:
+    """
+    Generate text representation of integer number.
+    :param number: any number
+    :return: text representation of passed number
+    """
+    with open('./animations/numbers.json', 'r') as fp:
+        numbers = load(fp)
+    text = zip(*[numbers[num].split('\n') for num in str(number)])
     text = '\n'.join([''.join(line) for line in list(text)])
     return text
 
 
 async def create_phrase(derive_canvas):
+    """
+    Generates sentences describing what's special
+    about current game year for space.
+    :param derive_canvas: current derived WindowObject
+    """
     ticks = calculate_ticks_number(1.5)
     pos_y, pos_x = (5, 0)
 
@@ -52,9 +61,13 @@ async def create_phrase(derive_canvas):
 
 
 async def animate_year(derive_canvas):
-    ticks = calculate_ticks_number(1.5)
+    """
+    Animates current game year changing.
+    :param derive_canvas: current derived WindowObject
+    """
+    ticks = calculate_ticks_number(GAME_YEAR_DURATION)
     while True:
-        text_year = generate_text_year(get_current_year())
+        text_year = generate_text_from_number(get_current_year())
 
         append_coroutine(create_phrase(derive_canvas))
         await update_frame(derive_canvas, 0, 0, text_year, ticks)

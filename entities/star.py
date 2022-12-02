@@ -25,6 +25,10 @@ class Star(SpaceObject):
         self.appearance_delay = appearance_delay
 
     async def animate(self, canvas) -> None:
+        """
+        Animates object moving.
+        :param canvas: current WindowObject
+        """
         await sleep(self.appearance_delay)
         for lifetime, style in self.stages:
             canvas.addstr(

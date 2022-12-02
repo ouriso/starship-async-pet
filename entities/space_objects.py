@@ -5,7 +5,7 @@ from entities.common import (
     ObjectBorders, ObjectSize,
     FrameStage
 )
-from utils.frames import get_frame_size, get_frames_from_file
+from utils.frames import get_frame_size, get_frames_from_file, update_frame
 
 
 class SpaceObject(ABC):
@@ -13,7 +13,6 @@ class SpaceObject(ABC):
     Abstract class that implements the positioning of an object
      in the current window.
     """
-    # TODO add property to detect if object must be destroyed mutually
     explode_frames = get_frames_from_file(r'./animations/explosion.txt')
     stages: FrameStage = ()
     need_to_stop: bool = False
@@ -29,6 +28,10 @@ class SpaceObject(ABC):
 
     @property
     def frame(self) -> str:
+        """
+        Returns the first frame of the object.
+        :return: first frame
+        """
         if isinstance(self.frames, str):
             return self.frames
         else:
@@ -63,4 +66,21 @@ class SpaceObject(ABC):
         """
 
     def set_need_to_stop(self):
+        """
+        Sets a flag indicating that the animation coroutine should stop.
+        """
         self.need_to_stop = True
+
+    async def explode(self, canvas) -> None:
+        """
+        Explosion animation after collision.
+        :param canvas: current WindowObject
+        """
+        explode_size = get_frame_size(self.explode_frames[0])
+        # calculate base position of the explosion size
+        center_y = self.position_y + self.dimensions.height / 2
+        center_x = self.position_x + self.dimensions.width / 2
+        explode_y = center_y - explode_size.height / 2
+        explode_x = center_x - explode_size.width / 2
+        for frame in self.explode_frames:
+            await update_frame(canvas, explode_y, explode_x, frame)

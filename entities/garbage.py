@@ -5,8 +5,7 @@ from entities.obstacle import Obstacle, get_obstacles
 from entities.space_objects import SpaceObject
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.event_loop import append_coroutine
-from utils.frames import get_frame_size, get_frames_from_file, \
-    update_frame
+from utils.frames import get_frame_size, get_frames_from_file, update_frame
 from utils.game_year import get_current_year
 from utils.sleep import sleep
 
@@ -14,6 +13,11 @@ from utils.sleep import sleep
 class Garbage(SpaceObject):
 
     async def animate(self, canvas) -> None:
+        """
+        Animates object moving.
+        :param canvas: current WindowObject
+        :return:
+        """
         height, width = get_canvas_dimensions()
 
         while self.position_y < height:
@@ -27,31 +31,32 @@ class Garbage(SpaceObject):
 
             self.position_y += self.speed_by_y
 
-    async def explode(self, canvas) -> None:
-        explode_size = get_frame_size(self.explode_frames[0])
-        center_y = self.position_y + self.dimensions.height / 2
-        center_x = self.position_x + self.dimensions.width / 2
-        explode_y = center_y - explode_size.height / 2
-        explode_x = center_x - explode_size.width / 2
-        for frame in self.explode_frames:
-            await update_frame(canvas, explode_y, explode_x, frame)
-
 
 async def generate_garbage(canvas) -> None:
+    """
+    Generates various garbage in space depending on the current game year.
+    :param canvas: current WindowObject
+    """
     height, width = get_canvas_dimensions()
     obstacles = get_obstacles()
 
     garbage_frames = get_frames_from_file('./animations/garbage.txt')
 
     while True:
-        await sleep(get_garbage_delay_tics(get_current_year()))
+        creation_delay = get_garbage_delay_tics(get_current_year())
+        if not creation_delay:
+            # if delay is None - there is no garbage yet
+            await sleep()
+            continue
+        await sleep(creation_delay)
         frame = choice(garbage_frames)
         frame_height, frame_width = get_frame_size(frame)
 
         pos_x = randint(3 - frame_width, width - 3)
         pos_y = 1 - frame_height
-
         new_garbage = Garbage(pos_y, pos_x, frame, 1, 0)
+
+        # extending global variables with new objects
         append_coroutine(new_garbage.animate(canvas))
         obstacles.append(Obstacle(new_garbage))
 
@@ -64,7 +69,7 @@ def get_garbage_delay_tics(year) -> Optional[int]:
     :return: calculated delay
     """
     if year < 1961:
-        return 40
+        return None
     elif year < 1969:
         return 20
     elif year < 1981:

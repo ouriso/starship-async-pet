@@ -21,3 +21,6 @@ ROWS_SPEED_LIMIT = 5
 
 # stars generator config
 STARS_DENSITY = 100
+
+# game settings
+GAME_YEAR_DURATION = 1.5

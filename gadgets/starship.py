@@ -9,7 +9,7 @@ from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
 from utils.canvas_dimensions import get_canvas_dimensions
 from utils.event_loop import append_coroutine
-from utils.frames import get_frame_size, update_frame
+from utils.frames import update_frame
 from utils.game_over import game_over_animate
 from utils.game_year import get_current_year
 from utils.sleep import sleep
@@ -71,9 +71,7 @@ class BaseStarShip(SpaceObject):
         # if collision was happened stop ship animation, explode and game_over
         self.set_need_to_stop()
         await self.explode(canvas)
-        append_coroutine(
-            game_over_animate(canvas, self.explode(canvas))
-        )
+        append_coroutine(game_over_animate(canvas))
 
     @staticmethod
     def _limit(value, speed_limit: int):
@@ -108,16 +106,14 @@ class BaseStarShip(SpaceObject):
     def update_speed(self, rows_direction, columns_direction):
         """
         Update speed smoothly to make control handy for player.
-        Return new speed value (row_speed, column_speed).
+        Set up a new speed value (row_speed, column_speed).
 
-        rows_direction — is a force direction by y-axis. Possible values:
-           -1 — if force pulls up
-           0  — if force has no effect
-           1  — if force pulls down
-        columns_direction — is a force direction by x-axis. Possible values:
-           -1 — if force pulls left
-           0  — if force has no effect
-           1  — if force pulls right
+        :param rows_direction: is a direction by y-axis
+        :param columns_direction: is a direction by x-axis
+         — Possible values for both params:
+           -1 — pulls up (rows_direction) or left (columns_direction)
+           0  — has no effect
+           1  — pulls down (rows_direction) or right (columns_direction)
         """
 
         if rows_direction not in (-1, 0, 1):
@@ -174,12 +170,3 @@ class BaseStarShip(SpaceObject):
 
         self.position_y += self.speed_by_y
         self.position_x += self.speed_by_x
-
-    async def explode(self, canvas) -> None:
-        explode_size = get_frame_size(self.explode_frames[0])
-        center_y = self.position_y + self.dimensions.height / 2
-        center_x = self.position_x + self.dimensions.width / 2
-        explode_y = center_y - explode_size.height / 2
-        explode_x = center_x - explode_size.width / 2
-        for frame in self.explode_frames:
-            await update_frame(canvas, explode_y, explode_x, frame)
