@@ -4,7 +4,7 @@ from typing import Set, Sequence
 
 from entities.common import FrameStage
 from entities.space_objects import SpaceObject
-from utils.canvas_dimensions import get_canvas_dimensions
+from utils.globals import get_canvas_dimensions
 from utils.sleep import sleep, calculate_ticks_number
 
 

@@ -1,7 +1,7 @@
 from json import load
 
 from config import GAME_YEAR_DURATION
-from utils.event_loop import append_coroutine
+from utils.globals import append_coroutine
 from utils.frames import update_frame
 from utils.sleep import calculate_ticks_number
 

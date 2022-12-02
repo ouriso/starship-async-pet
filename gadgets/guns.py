@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from random import randrange
 
-from utils.canvas_dimensions import get_canvas_dimensions
-from entities.obstacle import get_obstacles
+from utils.globals import get_obstacles, get_canvas_dimensions
 from utils.sleep import sleep
 
 

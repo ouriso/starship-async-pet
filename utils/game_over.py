@@ -2,7 +2,7 @@ from itertools import cycle
 
 from entities.common import ObjectAxesParams
 from entities.obstacle import check_object_collisions
-from utils.canvas_dimensions import get_canvas_dimensions
+from utils.globals import get_canvas_dimensions
 from utils.frames import get_frames_from_file, get_frame_size, update_frame
 
 positions_delta = (

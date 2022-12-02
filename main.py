@@ -5,8 +5,8 @@ from config import STARS_DENSITY, INIT_POS_RATIO_Y, INIT_POS_RATIO_X, BASE_DELAY
 from entities.garbage import generate_garbage
 from entities.star import generate_stars
 from gadgets.starship import BaseStarShip
-from utils.canvas_dimensions import set_canvas_dimensions, get_canvas_dimensions
-from utils.event_loop import get_coroutines
+from utils.globals import get_coroutines, set_canvas_dimensions, \
+    get_canvas_dimensions
 from utils.frames import get_frames_from_file
 from utils.game_year import animate_year
 

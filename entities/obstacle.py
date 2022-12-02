@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from entities.space_objects import SpaceObject
-from utils.canvas_dimensions import get_canvas_dimensions
+from utils.globals import get_obstacles, get_canvas_dimensions
 from utils.frames import draw_frame
 from utils.sleep import sleep
 
@@ -135,11 +135,3 @@ def check_object_collisions(
         if is_collision:
             return True
     return False
-
-
-OBSTACLES: List[Obstacle] = []
-
-
-def get_obstacles():
-    global OBSTACLES
-    return OBSTACLES

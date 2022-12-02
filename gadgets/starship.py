@@ -7,8 +7,7 @@ from controls import read_controls
 from entities.obstacle import check_object_collisions
 from entities.space_objects import SpaceObject
 from gadgets.guns import OldTroopersBlaster
-from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import append_coroutine
+from utils.globals import append_coroutine, get_canvas_dimensions
 from utils.frames import update_frame
 from utils.game_over import game_over_animate
 from utils.game_year import get_current_year

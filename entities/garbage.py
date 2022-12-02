@@ -1,10 +1,10 @@
 from random import choice, randint
 from typing import Optional
 
-from entities.obstacle import Obstacle, get_obstacles
+from entities.obstacle import Obstacle
 from entities.space_objects import SpaceObject
-from utils.canvas_dimensions import get_canvas_dimensions
-from utils.event_loop import append_coroutine
+from utils.globals import append_coroutine, get_obstacles, \
+    get_canvas_dimensions
 from utils.frames import get_frame_size, get_frames_from_file, update_frame
 from utils.game_year import get_current_year
 from utils.sleep import sleep

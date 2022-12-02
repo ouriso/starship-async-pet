@@ -1,6 +1,11 @@
 import curses
+from types import coroutine
+from typing import List
 
 from entities.common import ObjectSize
+
+COROUTINES: List[coroutine] = []
+OBSTACLES: list = []
 
 _CANVAS_WIDTH = None
 _CANVAS_HEIGHT = None
@@ -30,3 +35,30 @@ def get_canvas_dimensions() -> ObjectSize:
     :return: window height and width
     """
     return ObjectSize(height=_CANVAS_HEIGHT, width=_CANVAS_WIDTH)
+
+
+def get_coroutines() -> List[coroutine]:
+    """
+    Receives coroutines list.
+    :return:
+    """
+    global COROUTINES
+    return COROUTINES
+
+
+def append_coroutine(new_coroutine: coroutine):
+    """
+    Extends coroutines list.
+    :param new_coroutine: new coroutine to append
+    """
+    global COROUTINES
+    COROUTINES.append(new_coroutine)
+
+
+def get_obstacles() -> list:
+    """
+    Receives obstacles list.
+    :return:
+    """
+    global OBSTACLES
+    return OBSTACLES
