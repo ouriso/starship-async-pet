@@ -11,6 +11,7 @@ from utils.canvas_dimensions import get_canvas_dimensions
 from utils.event_loop import append_coroutine
 from utils.frames import get_frame_size, update_frame
 from utils.game_over import game_over_animate
+from utils.game_year import get_current_year
 from utils.sleep import sleep
 
 
@@ -59,7 +60,7 @@ class BaseStarShip(SpaceObject):
         while True:
             rows_direction, columns_direction, need_fire = read_controls(canvas)
             self.change_position(rows_direction, columns_direction)
-            if need_fire:
+            if (get_current_year() > 2020) and need_fire:
                 append_coroutine(self.fire(canvas))
             await sleep()
             if check_object_collisions(
