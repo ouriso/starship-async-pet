@@ -2,7 +2,7 @@ import math
 from itertools import cycle
 from types import coroutine
 
-from config import ROWS_SPEED_LIMIT, COLUMNS_SPEED_LIMIT
+from config import ROWS_SPEED_LIMIT, COLUMNS_SPEED_LIMIT, ITS_A_GUN_TIME
 from controls import read_controls
 from entities.obstacle import check_object_collisions
 from entities.space_objects import SpaceObject
@@ -59,7 +59,7 @@ class BaseStarShip(SpaceObject):
         while True:
             rows_direction, columns_direction, need_fire = read_controls(canvas)
             self.change_position(rows_direction, columns_direction)
-            if (get_current_year() > 2020) and need_fire:
+            if (get_current_year() > ITS_A_GUN_TIME) and need_fire:
                 append_coroutine(self.fire(canvas))
             await sleep()
             if check_object_collisions(
